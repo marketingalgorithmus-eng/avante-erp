@@ -1,0 +1,132 @@
+/* Avante ERP — tokens semânticos (fonte: DESIGN.md). Único arquivo com valores de cor.
+   Paleta da logo: Azul Avante #0A5CDB · Tinta #11141B · Branco. Sem verde. */
+:root {
+  /* Neutros */
+  --background: 225 16% 95%;        /* #EFF1F5 canvas */
+  --foreground: 222 22% 9%;         /* #11141B tinta da logo */
+  --card: 0 0% 100%;
+  --card-foreground: 222 22% 9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 22% 9%;
+  --muted: 225 18% 96%;             /* #F3F4F7 */
+  --muted-foreground: 222 9% 42%;   /* #616775 (5.7:1) */
+  --border: 225 14% 91%;
+  --input: 225 12% 85%;
+
+  /* Marca — Azul Avante (ERP e PDV) */
+  --primary: 216 91% 45%;           /* #0A5CDB */
+  --primary-hover: 216 91% 39%;
+  --primary-active: 216 91% 33%;
+  --primary-subtle: 216 90% 95%;    /* #E9F1FE */
+  --primary-foreground: 0 0% 100%;
+  --ring: 216 91% 45%;
+  --brand-pdv: 216 91% 45%;         /* PDV usa o mesmo azul */
+  --brand-pdv-hover: 216 91% 39%;
+  --brand-pdv-subtle: 216 90% 95%;
+
+  /* Tinta (preto da logo) e destaque */
+  --ink: 222 22% 9%;
+  --ink-foreground: 0 0% 100%;
+  --highlight: 222 22% 9%;
+  --highlight-foreground: 0 0% 100%;
+  --gradient-brand: linear-gradient(140deg, hsl(214 95% 56%) 0%, hsl(216 91% 45%) 45%, hsl(220 85% 30%) 100%);
+  --gradient-ink: linear-gradient(150deg, hsl(222 20% 16%) 0%, hsl(222 22% 7%) 100%);
+
+  --secondary: 225 18% 96%;
+  --secondary-foreground: 222 22% 9%;
+  --accent: 225 18% 95%;
+  --accent-foreground: 222 22% 9%;
+  --destructive: 4 74% 49%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Superfícies */
+  --sidebar: 0 0% 100%;
+  --sidebar-foreground: 222 22% 9%;
+  --sidebar-active: 222 22% 9%;          /* item ativo: pílula preta */
+  --sidebar-active-foreground: 0 0% 100%;
+  --sidebar-sub-active: 216 90% 95%;
+  --sidebar-sub-active-foreground: 216 91% 40%;
+  --table-header: 225 18% 97%;
+  --row-selected: 216 90% 95%;
+
+  /* Status — sem verde: positivo usa o azul da marca */
+  --status-success: 216 90% 95%;   --status-success-fg: 216 85% 34%;   /* Ativo, pago, concluído */
+  --status-warning: 39 88% 94%;    --status-warning-fg: 36 100% 27%;
+  --status-error: 0 81% 96%;       --status-error-fg: 4 76% 40%;
+  --status-pending: 45 100% 93%;   --status-pending-fg: 44 100% 24%;
+  --status-invoiced: 222 14% 92%;  --status-invoiced-fg: 222 22% 16%;  /* faturado: tinta */
+  --status-cancelled: 225 14% 94%; --status-cancelled-fg: 222 9% 40%;
+
+  /* Forma */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+  --shadow-card: 0 1px 2px hsl(222 22% 9% / 0.04), 0 6px 20px hsl(222 22% 9% / 0.05);
+  --shadow-pop: 0 10px 30px hsl(222 22% 9% / 0.12);
+  --shadow-brand: 0 10px 24px hsl(216 91% 45% / 0.28);
+  --shadow-modal: 0 24px 64px hsl(222 22% 9% / 0.22);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* Mantida por compatibilidade: o PDV agora usa o mesmo azul da marca */
+.theme-pdv { --background: 225 16% 95%; }
+
+.dark {
+  --background: 222 22% 6%;
+  --foreground: 220 20% 94%;
+  --card: 222 18% 10%;
+  --card-foreground: 220 20% 94%;
+  --popover: 222 18% 11%;
+  --popover-foreground: 220 20% 94%;
+  --muted: 222 16% 14%;
+  --muted-foreground: 220 10% 64%;
+  --border: 222 14% 17%;
+  --input: 222 14% 23%;
+
+  --primary: 214 95% 60%;
+  --primary-hover: 214 95% 66%;
+  --primary-active: 214 95% 70%;
+  --primary-subtle: 216 60% 17%;
+  --primary-foreground: 222 30% 8%;
+  --ring: 214 95% 60%;
+  --brand-pdv: 214 95% 60%;
+  --brand-pdv-hover: 214 95% 66%;
+  --brand-pdv-subtle: 216 60% 17%;
+
+  --ink: 220 20% 94%;
+  --ink-foreground: 222 22% 9%;
+  --highlight: 222 16% 15%;
+  --highlight-foreground: 0 0% 100%;
+  --gradient-brand: linear-gradient(140deg, hsl(214 95% 58%) 0%, hsl(216 91% 45%) 50%, hsl(220 85% 28%) 100%);
+  --gradient-ink: linear-gradient(150deg, hsl(222 16% 18%) 0%, hsl(222 18% 11%) 100%);
+
+  --secondary: 222 16% 14%;
+  --secondary-foreground: 220 20% 94%;
+  --accent: 222 16% 15%;
+  --accent-foreground: 220 20% 94%;
+  --destructive: 4 72% 56%;
+  --destructive-foreground: 0 0% 100%;
+
+  --sidebar: 222 18% 10%;
+  --sidebar-foreground: 220 15% 86%;
+  --sidebar-active: 220 20% 94%;
+  --sidebar-active-foreground: 222 22% 9%;
+  --sidebar-sub-active: 216 60% 17%;
+  --sidebar-sub-active-foreground: 214 95% 72%;
+  --table-header: 222 16% 12%;
+  --row-selected: 216 60% 17%;
+
+  --status-success: 216 60% 17%;   --status-success-fg: 214 95% 74%;
+  --status-warning: 36 60% 15%;    --status-warning-fg: 40 95% 68%;
+  --status-error: 4 45% 16%;       --status-error-fg: 4 90% 75%;
+  --status-pending: 44 60% 15%;    --status-pending-fg: 45 95% 68%;
+  --status-invoiced: 222 14% 18%;  --status-invoiced-fg: 220 20% 88%;
+  --status-cancelled: 222 14% 16%; --status-cancelled-fg: 220 10% 66%;
+
+  --shadow-card: 0 1px 2px hsl(0 0% 0% / 0.3);
+  --shadow-pop: 0 10px 30px hsl(0 0% 0% / 0.45);
+  --shadow-brand: 0 10px 24px hsl(214 95% 40% / 0.35);
+  --shadow-modal: 0 24px 64px hsl(0 0% 0% / 0.55);
+}

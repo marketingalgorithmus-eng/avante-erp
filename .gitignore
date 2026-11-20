@@ -1,0 +1,11 @@
+# Sistema
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Dependências e builds (se o projeto migrar para React/Vite)
+node_modules/
+dist/
+
+# Configurações locais do Claude Code
+.claude/settings.local.json
