@@ -223,3 +223,6 @@ body { background: var(--canvas-art); background-attachment: fixed; }
 .pdv-launch .lbl { align-items: flex-start; gap: 4px; }
 .pdv-launch-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
 .pdv-key { padding: 1px 6px; background: transparent; border: 1px solid hsl(var(--primary-foreground) / .55); color: hsl(var(--primary-foreground)); border-radius: 6px; }
+
+/* v2.5: ícone do "Abrir PDV" sem o quadrado em volta */
+.pdv-launch-icon { background: none; width: auto; height: auto; padding: 0 4px 0 6px; border-radius: 0; }
