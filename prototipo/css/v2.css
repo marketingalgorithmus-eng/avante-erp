@@ -214,3 +214,12 @@ body { background: var(--canvas-art); background-attachment: fixed; }
   .shell.is-collapsed .pdv-launch .lbl { display: flex; }
   .shell.is-collapsed .pdv-launch-go { display: inline-flex; }
 }
+
+/* ---------- v2.4: "Abrir PDV" mais discreto (sem brilho, textura ou animação) ---------- */
+.pdv-launch { background: var(--gradient-brand); box-shadow: var(--shadow-brand); min-height: 64px; gap: 12px; padding: 10px 14px 10px 10px; }
+.pdv-launch::before, .pdv-launch::after { content: none; }
+.pdv-launch:hover { background: var(--gradient-brand); filter: brightness(1.06); transform: none; box-shadow: var(--shadow-brand); }
+.pdv-launch-icon { background: hsl(var(--primary-foreground) / .16); box-shadow: none; backdrop-filter: none; border-radius: 12px; }
+.pdv-launch .lbl { align-items: flex-start; gap: 4px; }
+.pdv-launch-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.pdv-key { padding: 1px 6px; background: transparent; border: 1px solid hsl(var(--primary-foreground) / .55); color: hsl(var(--primary-foreground)); border-radius: 6px; }
