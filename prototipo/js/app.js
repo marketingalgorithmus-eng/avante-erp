@@ -103,10 +103,10 @@ window.Router = (function () {
         '<nav class="nav">' + nav + '</nav>' +
       '</div>' +
       '<div class="flyout" id="flyout" aria-label="Mais opções do menu">' + flyouts + '</div>' +
-      '<div class="sidebar-foot"><a class="pdv-launch" href="#/transicao/pdv" title="Abrir PDV">' +
-        '<span class="pdv-launch-icon">' + icon('monitor', 18) + '</span>' +
-        '<span class="lbl"><span class="pdv-launch-title">Abrir PDV</span><span class="pdv-launch-sub">Frente de caixa</span></span>' +
-        '<span class="kbd">Alt+1</span></a></div>' +
+      '<div class="sidebar-foot"><a class="pdv-launch" href="#/transicao/pdv" title="Abrir PDV (Alt+1)">' +
+        '<span class="pdv-launch-icon">' + icon('monitor', 19) + '<i class="pdv-live" aria-hidden="true"></i></span>' +
+        '<span class="lbl"><span class="pdv-launch-title">Abrir PDV</span><span class="pdv-launch-sub">Frente de caixa · <span class="pdv-key">Alt+1</span></span></span>' +
+        '<span class="pdv-launch-go" aria-hidden="true">' + icon('arrowRight', 16) + '</span></a></div>' +
     '</aside>';
   }
 

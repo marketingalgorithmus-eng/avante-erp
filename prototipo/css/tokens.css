@@ -46,6 +46,11 @@
   --gradient-indigo: linear-gradient(135deg, hsl(230 100% 98%) 0%, hsl(236 90% 95%) 100%);
   --gradient-sidebar: linear-gradient(180deg, hsl(222 74% 24%) 0%, hsl(219 82% 32%) 45%, hsl(216 88% 40%) 100%);
   --gradient-flyout: linear-gradient(180deg, hsl(214 100% 97%) 0%, hsl(220 95% 94%) 100%);
+  /* Botão-assinatura "Abrir PDV": azul monocromático (céu → Azul Avante → azul profundo) */
+  --gradient-pdv: linear-gradient(135deg, hsl(206 100% 62%) 0%, hsl(212 98% 52%) 38%, hsl(216 92% 44%) 70%, hsl(220 90% 34%) 100%);
+  --pdv-glow: 0 10px 28px hsl(212 98% 50% / .45), inset 0 1px 0 hsl(0 0% 100% / .35);
+  --pdv-glow-hover: 0 14px 34px hsl(212 98% 50% / .55), inset 0 1px 0 hsl(0 0% 100% / .4);
+  --pdv-ring: 210 98% 56%;
   /* Fundo de todas as telas: manchas suaves de azul (igual à tela de carregamento) */
   --canvas-art:
     radial-gradient(55% 60% at 18% 20%, hsl(216 95% 89% / .85) 0%, transparent 70%),
