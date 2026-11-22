@@ -102,6 +102,59 @@ window.Painel = (function () {
     '</section>';
   }
 
+  /* ---------- Calendário financeiro (vencimentos e movimentos de caixa) ---------- */
+  var MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  var cal = { y: 2026, m: 10, sel: null };     // mês exibido (0–11) e dia selecionado (dd/mm/aaaa)
+  var HOJE = D.periodo.fim;                     // "hoje" do protótipo: data da última atualização
+
+  function calendar() {
+    var mov = {};
+    D.movimentosPorDia.forEach(function (x) { mov[x.dia + '/2026'] = x; });
+    var first = new Date(cal.y, cal.m, 1), total = new Date(cal.y, cal.m + 1, 0).getDate();
+    var pad = function (n) { return ('0' + n).slice(-2); };
+    var cells = '';
+    for (var i = 0; i < first.getDay(); i++) cells += '<span class="cal-cell is-blank" aria-hidden="true"></span>';
+    for (var d = 1; d <= total; d++) {
+      var key = pad(d) + '/' + pad(cal.m + 1) + '/' + cal.y;
+      var x = mov[key], tone = '';
+      if (x) tone = x.entradas > x.saidas ? 'is-in' : (x.saidas > x.entradas ? 'is-out' : 'is-eq');
+      var label = d + ' de ' + MESES[cal.m] + (x ? ': entradas ' + brl(x.entradas) + ', saídas ' + brl(x.saidas) : ': sem movimentos');
+      cells += '<button type="button" class="cal-cell ' + tone + (key === HOJE ? ' is-today' : '') + (key === cal.sel ? ' is-selected' : '') + '" data-day="' + key + '" aria-label="' + label + '"' + (key === cal.sel ? ' aria-pressed="true"' : '') + '>' +
+        '<span class="num">' + d + '</span>' + (x ? '<i class="cal-dot" aria-hidden="true"></i>' : '') + '</button>';
+    }
+    var detail = '';
+    if (cal.sel) {
+      var s = mov[cal.sel] || { entradas: 0, saidas: 0 };
+      detail = '<div class="cal-detail"><strong class="num">' + cal.sel + (cal.sel === HOJE ? ' · hoje' : '') + '</strong>' +
+        '<span class="num">Entradas <b>' + brl(s.entradas) + '</b></span><span class="num">Saídas <b>' + brl(s.saidas) + '</b></span>' +
+        '<span class="spacer"></span>' + UI.btn({ label: 'Ver movimentações', size: 'sm', icon: 'arrowRight', href: '#/financeiro/movimentacoes' }) + '</div>';
+    }
+    return '<div class="big-head"><div class="cal-title"><span class="cal-badge">' + icon('calendar', 18) + '</span>' +
+        '<div><h2 class="big-title">Calendário financeiro</h2><p class="block-sub">Vencimentos e movimentos de caixa</p></div></div>' +
+        '<div class="cal-nav">' + UI.btn({ icon: 'chevRight', size: 'sm', cls: 'btn-icon cal-prev', aria: 'Mês anterior' }) +
+          '<strong class="cal-month">' + MESES[cal.m] + ' de ' + cal.y + '</strong>' +
+          UI.btn({ icon: 'chevRight', size: 'sm', cls: 'btn-icon cal-next', aria: 'Próximo mês' }) + '</div></div>' +
+      '<div class="cal-grid" role="grid">' + ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(function (w) { return '<span class="cal-week">' + w + '</span>'; }).join('') + cells + '</div>' +
+      detail +
+      '<div class="cal-legend"><span><i class="cal-dot is-in"></i>Mais entradas</span><span><i class="cal-dot is-out"></i>Mais saídas</span><span><i class="cal-dot is-eq"></i>Valores iguais</span><span><i class="cal-ring"></i>Hoje</span></div>';
+  }
+
+  function bindCalendar(root) {
+    var box = root.querySelector('#cal');
+    if (!box) return;
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      if (b.classList.contains('cal-prev')) { cal.m--; if (cal.m < 0) { cal.m = 11; cal.y--; } cal.sel = null; }
+      else if (b.classList.contains('cal-next')) { cal.m++; if (cal.m > 11) { cal.m = 0; cal.y++; } cal.sel = null; }
+      else if (b.dataset.day) cal.sel = cal.sel === b.dataset.day ? null : b.dataset.day;
+      else return;
+      box.innerHTML = calendar();
+      var again = b.dataset.day ? box.querySelector('[data-day="' + b.dataset.day + '"]') : box.querySelector(b.classList.contains('cal-prev') ? '.cal-prev' : '.cal-next');
+      if (again) again.focus();
+    });
+  }
+
   /* ---------- Bloco 3 (novo): atenção agora + últimas ações, em 2 cartões grandes ---------- */
   function focus() {
     var venceHoje = D.pagar.hoje.concat(D.receber.hoje);
@@ -331,7 +384,9 @@ window.Painel = (function () {
     if (!loaded) el.innerHTML = skeleton();
     setTimeout(function () {
       loaded = true;
-      el.innerHTML = '<div class="page page-home">' + header() + shortcuts() + kpis() + focus() + money() + geo() + '</div>' +
+      el.innerHTML = '<div class="page page-home">' + header() + shortcuts() + kpis() +
+        '<section class="card big-card cal-card" id="cal" aria-label="Calendário financeiro">' + calendar() + '</section>' +
+        focus() + money() + geo() + '</div>' +
         (q.modal === 'boas-vindas' && window.WelcomeModal ? WelcomeModal() : '');
       el.querySelectorAll('[data-periodo]').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -342,6 +397,7 @@ window.Painel = (function () {
       el.querySelectorAll('.geo .seg button').forEach(function (btn, _, all) {
         btn.addEventListener('click', function () { all.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); }); });
       });
+      bindCalendar(el);
       if (window.Globe) window.Globe.mount(document.getElementById('globe'));
     }, loaded ? 0 : 280);
   }
