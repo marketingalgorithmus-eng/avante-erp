@@ -147,3 +147,12 @@ body { background: var(--canvas-art); background-attachment: fixed; }
 .company.is-inline { background: hsl(var(--card)); box-shadow: var(--shadow-card); }
 .company.is-inline:hover { background: hsl(var(--accent)); }
 .company.is-inline .company-name, .company.is-inline .ic { color: hsl(var(--foreground)); }
+
+/* ---------- v2.2: "Abrir PDV" integrado ao azul (sem o bloco branco) ---------- */
+.sidebar-foot { padding: 8px; }
+.pdv-launch { background: hsl(var(--sidebar-foreground) / .08); border: 1px solid hsl(var(--sidebar-foreground) / .16); color: hsl(var(--sidebar-foreground)); box-shadow: none; transition: background-color .15s, border-color .15s, transform .15s; }
+.pdv-launch:hover { background: hsl(var(--sidebar-foreground) / .16); border-color: hsl(var(--sidebar-foreground) / .3); color: hsl(var(--sidebar-foreground)); transform: translateY(-1px); }
+.pdv-launch-icon { background: var(--gradient-brand); box-shadow: 0 0 0 1px hsl(var(--sidebar-foreground) / .25), var(--shadow-brand); }
+.pdv-launch-title { color: hsl(var(--sidebar-foreground)); }
+.pdv-launch-sub { color: hsl(var(--sidebar-foreground) / .7); }
+.pdv-launch .kbd { background: transparent; border-color: hsl(var(--sidebar-foreground) / .35); color: hsl(var(--sidebar-foreground) / .85); }
