@@ -93,14 +93,20 @@ window.Router = (function () {
         }).join('') + '</div>';
     }).join('');
 
+    /* Dois blocos separados: o painel principal (empresa + menu) e, abaixo, o bloco do PDV */
     return '<aside class="sidebar" id="sidebar" aria-label="Menu principal">' +
-      '<button type="button" class="company" title="Trocar empresa">' +
-        '<span class="company-icon">' + icon('building', 20) + '</span>' +
-        '<span class="company-meta"><span class="company-label">Empresa ativa</span><span class="company-name">' + esc(D.empresa.nome) + '</span></span>' +
-        icon('chevDown', 14, 'chev') + '</button>' +
-      '<nav class="nav">' + nav + '</nav>' +
+      '<div class="sidebar-panel">' +
+        '<button type="button" class="company" title="Trocar empresa">' +
+          '<span class="company-icon">' + icon('building', 20) + '</span>' +
+          '<span class="company-meta"><span class="company-label">Empresa ativa</span><span class="company-name">' + esc(D.empresa.nome) + '</span></span>' +
+          icon('chevDown', 14, 'chev') + '</button>' +
+        '<nav class="nav">' + nav + '</nav>' +
+      '</div>' +
       '<div class="flyout" id="flyout" aria-label="Mais opções do menu">' + flyouts + '</div>' +
-      '<div class="sidebar-foot"><a class="pdv-launch" href="#/transicao/pdv" title="Abrir PDV">' + icon('monitor', 17) + '<span class="lbl">Abrir PDV</span><span class="kbd">Alt+1</span></a></div>' +
+      '<div class="sidebar-foot"><a class="pdv-launch" href="#/transicao/pdv" title="Abrir PDV">' +
+        '<span class="pdv-launch-icon">' + icon('monitor', 18) + '</span>' +
+        '<span class="lbl"><span class="pdv-launch-title">Abrir PDV</span><span class="pdv-launch-sub">Frente de caixa</span></span>' +
+        '<span class="kbd">Alt+1</span></a></div>' +
     '</aside>';
   }
 

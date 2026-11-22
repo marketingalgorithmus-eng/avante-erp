@@ -117,3 +117,33 @@
   .flyout-back { display: inline-flex; }
   .flyout-close { display: none; }
 }
+
+/* ---------- v2.1: fundo com manchas azuis em todas as telas ---------- */
+body { background: var(--canvas-art); background-attachment: fixed; }
+.topbar, .pdv-top { background: hsl(var(--background) / .55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.layout-pdv, .theme-pdv.layout-pdv { background: transparent; }
+.splash { background: var(--canvas-art); }
+
+/* ---------- v2.1: menu em dois blocos (painel principal + bloco do PDV separado) ---------- */
+.sidebar { background: transparent; box-shadow: none; gap: 12px; }
+.sidebar-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; border-radius: var(--radius-lg); background: var(--gradient-sidebar); box-shadow: var(--shadow-brand); overflow: hidden; }
+.sidebar-foot { flex: none; padding: 10px; border-radius: var(--radius-lg); background: var(--gradient-sidebar); box-shadow: var(--shadow-brand); }
+.pdv-launch { height: auto; min-height: 52px; padding: 8px 12px 8px 8px; gap: 10px; border-radius: 14px; }
+.pdv-launch-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 11px; background: var(--gradient-brand); color: hsl(var(--primary-foreground)); flex: none; }
+.pdv-launch .lbl { display: flex; flex-direction: column; flex: 1; min-width: 0; line-height: 1.2; }
+.pdv-launch-title { font-size: 14px; font-weight: 700; }
+.pdv-launch-sub { font-size: 11.5px; font-weight: 500; color: hsl(var(--muted-foreground)); }
+.shell.is-collapsed .sidebar-foot { padding: 8px; }
+.shell.is-collapsed .pdv-launch { padding: 8px; justify-content: center; }
+.shell.is-collapsed .pdv-launch .lbl, .shell.is-collapsed .pdv-launch .kbd { display: none; }
+@media (max-width: 1023px) {
+  .sidebar { padding: 0 0 12px; }
+  .sidebar-panel { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .sidebar-foot { margin: 0 12px 0 0; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .shell.is-collapsed .pdv-launch .lbl { display: flex; }
+}
+
+/* Seletor de empresa fora do menu azul (topo do PDV) volta às cores normais */
+.company.is-inline { background: hsl(var(--card)); box-shadow: var(--shadow-card); }
+.company.is-inline:hover { background: hsl(var(--accent)); }
+.company.is-inline .company-name, .company.is-inline .ic { color: hsl(var(--foreground)); }
