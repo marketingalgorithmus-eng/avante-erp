@@ -79,13 +79,13 @@ window.Painel = (function () {
           '<div class="kpi-meta num"><span><b>' + int(v.quantidade) + '</b> vendas</span><span>Ticket médio <b>' + brl(v.ticketMedio) + '</b></span></div>' +
         '</a>' +
 
-        '<a class="card kpi" href="#/financeiro/contas-a-receber">' +
+        '<a class="card kpi kpi-soft-sky" href="#/financeiro/contas-a-receber">' +
           '<div class="kpi-top"><span>Contas a receber · hoje e 7 dias</span>' + icon('arrowIn', 16) + '</div>' +
           '<p class="kpi-value num' + zero(r.proximos7) + '">' + brl(r.proximos7) + '</p>' +
           '<div class="kpi-split num"><div><small>Vencidos</small><span>' + brl(r.vencidos) + '</span></div><div><small>Parcelas</small><span>' + int(r.parcelasProximas) + '</span></div></div>' +
         '</a>' +
 
-        '<a class="card kpi" href="#/financeiro/contas-a-pagar">' +
+        '<a class="card kpi kpi-soft-indigo" href="#/financeiro/contas-a-pagar">' +
           '<div class="kpi-top"><span>Contas a pagar · hoje e 7 dias</span>' + icon('arrowOut', 16) + '</div>' +
           '<p class="kpi-value num' + zero(p.proximos7) + '">' + brl(p.proximos7) + '</p>' +
           '<div class="kpi-split num"><div><small>Vencidos</small><span>' + brl(p.vencidos) + '</span></div><div><small>Parcelas</small><span>' + int(p.parcelasProximas) + '</span></div></div>' +
@@ -102,7 +102,66 @@ window.Painel = (function () {
     '</section>';
   }
 
-  /* ---------- Bloco 3: pendências ---------- */
+  /* ---------- Bloco 3 (novo): atenção agora + últimas ações, em 2 cartões grandes ---------- */
+  function focus() {
+    var venceHoje = D.pagar.hoje.concat(D.receber.hoje);
+    var orc = D.orcamentosAbertos;
+    var repor = D.estoque.abaixoDoMinimo;
+    var todo = [], ok = [];
+    if (!D.contasBancariasAtivas) todo.push({ tone: 'warn', icon: 'bank', title: 'Nenhuma conta bancária ativa', text: 'Cadastre uma conta para registrar recebimentos e usar a conciliação bancária.', label: 'Cadastrar conta', route: '#/financeiro/contas-bancarias?modal=nova' });
+    orc.forEach(function (o) { todo.push({ tone: 'blue', icon: 'file', title: 'Orçamento #' + o.numero + ' em aberto', text: 'Salvo em ' + o.salvoEm + '. Envie ao cliente ou converta em venda.', label: 'Abrir', route: '#/vendas/orcamentos?modal=ver&id=' + o.numero }); });
+    venceHoje.forEach(function () { todo.push({ tone: 'warn', icon: 'calendar', title: 'Conta vencendo hoje', text: '', label: 'Ver', route: '#/financeiro/contas-a-pagar' }); });
+    repor.forEach(function () { todo.push({ tone: 'warn', icon: 'box', title: 'Produto abaixo do mínimo', text: '', label: 'Repor', route: '#/catalogo/produtos' }); });
+    if (!venceHoje.length) ok.push({ icon: 'calendar', title: 'Nada vence hoje', route: '#/financeiro/contas-a-pagar' });
+    if (!repor.length) ok.push({ icon: 'box', title: 'Estoque acima do mínimo', route: '#/catalogo/produtos' });
+
+    var rows = todo.map(function (t) {
+      return '<li class="focus-row"><span class="focus-icon is-' + t.tone + '">' + icon(t.icon, 18) + '</span>' +
+        '<span class="focus-text"><strong>' + esc(t.title) + '</strong>' + (t.text ? '<span class="num">' + esc(t.text) + '</span>' : '') + '</span>' +
+        '<a class="btn ' + (t.tone === 'warn' ? 'btn-primary' : 'btn-outline') + ' btn-sm" href="' + t.route + '">' + t.label + icon('chevRight', 13) + '</a></li>';
+    }).join('');
+    var oks = ok.map(function (o) { return '<a class="focus-ok" href="' + o.route + '">' + icon('check', 14) + o.title + '</a>'; }).join('');
+
+    var acoes = D.atividade.map(function (a) {
+      return '<li><a class="act-row" href="' + a.rota + '"><span class="act-icon">' + icon(a.icone, 16) + '</span>' +
+        '<span class="act-text"><strong>' + esc(a.titulo) + '</strong><span class="num">' + esc(a.ref) + ' · ' + a.quando + '</span></span>' + icon('chevRight', 15, 'muted') + '</a></li>';
+    }).join('');
+
+    return '<section class="home-split" aria-label="Atenção e atividade">' +
+      '<div class="card big-card">' +
+        '<div class="big-head"><div><h2 class="big-title">O que precisa da sua atenção</h2><p class="block-sub">' + (todo.length ? todo.length + (todo.length === 1 ? ' item pede ação hoje' : ' itens pedem ação hoje') : 'Tudo em dia por aqui') + '</p></div>' +
+          '<span class="big-count num">' + todo.length + '</span></div>' +
+        (rows ? '<ul class="focus-list">' + rows + '</ul>' : UI.emptyState({ icon: 'check', title: 'Nenhuma pendência hoje.' })) +
+        (oks ? '<div class="focus-oks">' + oks + '</div>' : '') +
+      '</div>' +
+      '<div class="card big-card">' +
+        '<div class="big-head"><div><h2 class="big-title">Últimas ações</h2><p class="block-sub">O que foi feito no sistema</p></div></div>' +
+        (acoes ? '<ul class="act-list">' + acoes + '</ul>' : UI.emptyState({ icon: 'history', title: 'Nenhuma ação recente.' })) +
+      '</div>' +
+    '</section>';
+  }
+
+  /* ---------- Bloco 4 (novo): dinheiro no período, um cartão grande ---------- */
+  function money() {
+    var v = D.vendas, f = D.financeiro;
+    var resultado = v.receitaLiquida - D.custoItens - D.despesasAvulsas;
+    return '<section class="card big-card money" aria-label="Entradas e saídas">' +
+      '<div class="big-head"><div><h2 class="big-title">Entradas e saídas</h2><p class="block-sub num">Últimos ' + D.periodo.dias + ' dias · ' + D.periodo.inicio + ' — ' + D.periodo.fim + '</p></div>' +
+        '<div class="legend"><span><i class="c-in"></i>Entradas</span><span><i class="c-out"></i>Saídas</span></div></div>' +
+      '<div class="money-grid">' +
+        '<div class="money-chart">' + chart() + '</div>' +
+        '<div class="money-side">' +
+          '<div class="money-stat"><span>Entradas</span><strong class="num">' + brl(f.entradas) + '</strong></div>' +
+          '<div class="money-stat"><span>Saídas</span><strong class="num">' + brl(f.saidas) + '</strong></div>' +
+          '<div class="money-stat is-total"><span>Saldo ao final</span><strong class="num">' + brl(f.saldoFinal) + '</strong></div>' +
+          '<div class="money-stat"><span>Resultado operacional</span><strong class="num' + (resultado < 0 ? ' text-error' : '') + '">' + brl(resultado) + '</strong></div>' +
+          '<div class="row">' + UI.btn({ label: 'Ver movimentações', size: 'sm', href: '#/financeiro/movimentacoes' }) + UI.btn({ label: 'Mais gráficos', size: 'sm', variant: 'ghost', icon: 'chart', href: '#/relatorios/analises?tab=vendas' }) + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
+  }
+
+  /* ---------- Bloco 3 antigo (não usado no Painel atual) ---------- */
   function attention() {
     var venceHoje = D.pagar.hoje.concat(D.receber.hoje);
     var orc = D.orcamentosAbertos;
@@ -168,7 +227,7 @@ window.Painel = (function () {
     D.movimentosPorDia.forEach(function (m) { map[m.dia] = m; });
     var rows = labels.map(function (l) { var m = map[l] || {}; return { l: l, i: m.entradas || 0, o: m.saidas || 0 }; });
     var max = Math.max.apply(null, rows.map(function (r) { return Math.max(r.i, r.o); }).concat([1]));
-    var W = 640, H = 180, padL = 52, padB = 22, padT = 8, cw = (W - padL) / rows.length, bw = Math.max(2, cw / 2 - 2);
+    var W = 640, H = 230, padL = 52, padB = 22, padT = 8, cw = (W - padL) / rows.length, bw = Math.max(2, cw / 2 - 2);
     var y = function (v) { return H - padB - (v / max) * (H - padB - padT); };
     var ticks = [0, max / 2, max];
     var svg = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="Entradas e saídas por dia nos últimos ' + rows.length + ' dias">';
@@ -178,7 +237,7 @@ window.Painel = (function () {
     }).join('');
     rows.forEach(function (r, k) {
       var last = rows.length - 1;
-      if ((k % 7 === 0 && last - k > 3) || k === last) svg += '<text x="' + (padL + k * cw + cw / 2) + '" y="' + (H - 6) + '" text-anchor="middle">' + r.l + '</text>';
+      if ((k % 7 === 0 && last - k > 3) || k === last) svg += '<text x="' + (k === last ? W - 2 : padL + k * cw + cw / 2) + '" y="' + (H - 6) + '" text-anchor="' + (k === last ? 'end' : 'middle') + '">' + r.l + '</text>';
     });
     svg += '</g>';
     rows.forEach(function (r, k) {
@@ -254,9 +313,7 @@ window.Painel = (function () {
           '</div>' +
         '</div>' +
       '</div>' +
-    '</section>' +
-    '<div class="moved">' + icon('chart', 16) + '<p>Origem das vendas, categorias mais vendidas, clientes novos e recorrentes, devoluções e situação das vendas foram para <strong>Relatórios › Análises</strong>.</p>' +
-      '<a class="btn btn-outline btn-sm" href="#/relatorios/analises">Abrir análises</a></div>';
+    '</section>';
   }
 
   function skeleton() {
@@ -274,7 +331,7 @@ window.Painel = (function () {
     if (!loaded) el.innerHTML = skeleton();
     setTimeout(function () {
       loaded = true;
-      el.innerHTML = '<div class="page">' + header() + shortcuts() + kpis() + attention() + connected() + geo() + '</div>' +
+      el.innerHTML = '<div class="page page-home">' + header() + shortcuts() + kpis() + focus() + money() + geo() + '</div>' +
         (q.modal === 'boas-vindas' && window.WelcomeModal ? WelcomeModal() : '');
       el.querySelectorAll('[data-periodo]').forEach(function (btn) {
         btn.addEventListener('click', function () {

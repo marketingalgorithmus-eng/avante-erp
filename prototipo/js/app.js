@@ -67,14 +67,30 @@ window.Router = (function () {
         return '<div class="nav-group"><a class="nav-link" href="' + g.route + '" data-route="' + g.route + '" title="' + g.label + '">' +
           icon(g.icon, 17) + '<span class="nav-label">' + g.label + '</span></a></div>';
       }
-      var subs = g.children.map(function (c) {
+      var main = g.children.filter(function (c) { return !c.more; });
+      var more = g.children.filter(function (c) { return c.more; });
+      var subs = main.map(function (c) {
         if (c.section) return '<p class="nav-section">' + c.section + '</p>';
         return '<a href="' + c.route + '" data-route="' + c.route + '">' + c.label + '</a>';
       }).join('');
+      if (more.length) subs += '<button type="button" class="nav-more" data-flyout="' + g.id + '" aria-expanded="false" aria-controls="flyout">' +
+        icon('grid', 14) + '<span>' + (g.moreLabel || 'Mais') + '</span>' + icon('chevRight', 14, 'chev-r') + '</button>';
       return '<div class="nav-group" data-group="' + g.id + '">' +
         '<button type="button" class="nav-toggle" aria-expanded="false" title="' + g.label + '">' + icon(g.icon, 17) +
         '<span class="nav-label">' + g.label + '</span>' + icon('chevDown', 14, 'chev') + '</button>' +
         '<div class="nav-sub">' + subs + '</div></div>';
+    }).join('');
+
+    /* Painel lateral secundário (azul-claro) com os itens "more" de cada grupo */
+    var flyouts = MENU.filter(function (g) { return g.children && g.children.some(function (c) { return c.more; }); }).map(function (g) {
+      return '<div class="flyout-body" data-flyout-body="' + g.id + '" hidden>' +
+        '<div class="flyout-head"><button type="button" class="btn btn-ghost btn-icon btn-sm flyout-back" aria-label="Voltar ao menu">' + icon('chevRight', 15) + '</button>' +
+          '<div><p class="flyout-kicker">' + esc(g.label) + '</p><p class="flyout-title">' + esc(g.moreLabel || 'Mais') + '</p></div>' +
+          '<button type="button" class="btn btn-ghost btn-icon btn-sm flyout-close" aria-label="Fechar painel">' + icon('x', 15) + '</button></div>' +
+        g.children.filter(function (c) { return c.more; }).map(function (c) {
+          if (c.section) return '<p class="flyout-section">' + c.section + '</p>';
+          return '<a href="' + c.route + '" data-route="' + c.route + '">' + c.label + icon('chevRight', 14, 'chev-r') + '</a>';
+        }).join('') + '</div>';
     }).join('');
 
     return '<aside class="sidebar" id="sidebar" aria-label="Menu principal">' +
@@ -83,6 +99,7 @@ window.Router = (function () {
         '<span class="company-meta"><span class="company-label">Empresa ativa</span><span class="company-name">' + esc(D.empresa.nome) + '</span></span>' +
         icon('chevDown', 14, 'chev') + '</button>' +
       '<nav class="nav">' + nav + '</nav>' +
+      '<div class="flyout" id="flyout" aria-label="Mais opções do menu">' + flyouts + '</div>' +
       '<div class="sidebar-foot"><a class="pdv-launch" href="#/transicao/pdv" title="Abrir PDV">' + icon('monitor', 17) + '<span class="lbl">Abrir PDV</span><span class="kbd">Alt+1</span></a></div>' +
     '</aside>';
   }
@@ -118,6 +135,34 @@ window.Router = (function () {
       g.querySelector('.nav-toggle').setAttribute('aria-expanded', String(on));
     });
   }
+  /* ---------- Painel lateral secundário ---------- */
+  var flyout = document.getElementById('flyout');
+  var flyoutOpen = null;
+  function setFlyout(id) {
+    flyoutOpen = id;
+    shell.classList.toggle('has-flyout', !!id);
+    document.querySelectorAll('[data-flyout-body]').forEach(function (b) { b.hidden = b.getAttribute('data-flyout-body') !== id; });
+    document.querySelectorAll('.nav-more').forEach(function (b) {
+      var on = b.getAttribute('data-flyout') === id;
+      b.classList.toggle('is-open', on);
+      b.setAttribute('aria-expanded', String(on));
+    });
+    if (id) { var f = flyout.querySelector('[data-flyout-body="' + id + '"] a'); if (f) f.focus({ preventScroll: true }); }
+  }
+  window.closeFlyout = function () { if (flyoutOpen) setFlyout(null); };
+  document.querySelectorAll('.nav-more').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var id = b.getAttribute('data-flyout');
+      setFlyout(flyoutOpen === id ? null : id);
+    });
+  });
+  flyout.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (e.target.closest('.flyout-close, .flyout-back')) setFlyout(null);
+  });
+  document.addEventListener('click', function (e) { if (flyoutOpen && !e.target.closest('#flyout, .nav-more')) setFlyout(null); });
+
   document.getElementById('toggle-nav').addEventListener('click', function () {
     if (isMobile()) shell.classList.toggle('is-drawer-open');
     else shell.classList.toggle('is-collapsed');
@@ -187,6 +232,7 @@ window.Router = (function () {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); pal.hidden ? openPalette() : closePalette(); return; }
     if (e.key === 'Escape') {
       if (!pal.hidden) { closePalette(); return; }
+      if (flyoutOpen) { setFlyout(null); return; }
       var ov = document.querySelector('.modal-overlay');
       if (ov) { location.hash = ov.getAttribute('data-close'); return; }
       closeMenus(); shell.classList.remove('is-drawer-open'); return;
@@ -215,6 +261,9 @@ window.Router = (function () {
       g.classList.toggle('has-active', has);
       if (has) open[r.groupId] = true;
     });
+    document.querySelectorAll('.nav-more').forEach(function (b) {
+      b.classList.toggle('has-active', !!flyout.querySelector('[data-flyout-body="' + b.getAttribute('data-flyout') + '"] a.is-active'));
+    });
     syncGroups();
     return r;
   }
@@ -232,7 +281,8 @@ window.Router = (function () {
 
     var r = setActive(def && def.nav || cur.path);
     document.title = (def && def.title || (r && r.label) || 'Avante') + ' · Avante ERP';
-    shell.classList.remove('is-drawer-open');
+    if (cur.path !== lastPath) { shell.classList.remove('is-drawer-open'); setFlyout(null); }
+    if (cur.query.menu && document.querySelector('[data-flyout-body="' + cur.query.menu + '"]')) setFlyout(cur.query.menu);
 
     try {
       if (!def) target.innerHTML = missing(cur.path);

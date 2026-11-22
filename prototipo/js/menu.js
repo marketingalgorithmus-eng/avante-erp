@@ -31,28 +31,31 @@ window.MENU = [
     ]
   },
   {
-    id: 'financeiro', label: 'Financeiro', icon: 'bank', children: [
+    /* Grupos com muitos itens (> 6) se dividem: uso diário fica no menu principal (azul);
+       consultas, meios de pagamento, patrimônio e configurações abrem no painel lateral
+       ("Mais do financeiro", azul-claro). Itens do painel lateral têm more: true. */
+    id: 'financeiro', label: 'Financeiro', icon: 'bank', moreLabel: 'Mais do financeiro', children: [
       { label: 'Resumo financeiro', route: '#/financeiro', prints: [F + 'Avante_ComoEstaODinheiro.png', F + 'Avante_ComoEstaODinheiro02.png', F + 'Avante_ComoEstaODinheiro03.png'] },
-      { section: 'Dia a dia' },
       { label: 'Contas a pagar', route: '#/financeiro/contas-a-pagar', prints: [F + 'Avante_DinheiroDaEmpresa_ContasAPagar.png', F + 'Avante_DinheiroDaEmpresa_ContasAPagar_AdicionarContaAPagar.png', F + 'Avante_exemplodeComoEstaAMaioriaDosCamposAPreencher.png'] },
       { label: 'Contas a receber', route: '#/financeiro/contas-a-receber', prints: [F + 'Avante_DinehiroDaEmpresa_ValoresAReceber.png', F + 'Avante_DinheiroDaEmpresa_ValoresAReceber_AdicionarValorAReceber.png'] },
       { label: 'Movimentações', route: '#/financeiro/movimentacoes', prints: [F + 'Avante_MaisDoFinanceiro_Comdados.png', F + 'Avante_MaisDoFinaceiro_OqEntrouESaiu.png', F + 'Avante_MaisDoFinanceiro_OqentrouESaiu_RegistarEntrada.png'] },
-      { label: 'Fluxo de caixa', route: '#/financeiro/fluxo-de-caixa', prints: [F + 'Avante_EntradaESaidaPordia.png', F + 'Avante_EntradaESaidaPordia02.png'] },
       { label: 'Despesas avulsas', route: '#/financeiro/despesas-avulsas', prints: [F + 'Avante_DespesasAvulsas.png', F + 'Avante_DespesasAvulsas_Registardespesa.png'] },
-      { section: 'Bancos e meios' },
       { label: 'Contas bancárias', route: '#/financeiro/contas-bancarias', prints: [F + 'Avante_DinheiroDaEmpresa_ContasEBancos.png', F + 'Avante_DinheiroDaEmpresa_ContasEBancos_InicioComCadastro.png', F + 'Avante_DinheiroDaEmpresa_ContasEBancos_Cadastrar.png', F + 'Avante_DinheiroDaEmpresa_ContasEBancos_ContasPDV.png'] },
-      { label: 'Conciliação bancária', route: '#/financeiro/conciliacao', prints: [F + 'Avante_DinheiroDaEmpresa_ConciliacaoBancaria.png'] },
-      { label: 'Maquininhas e recebíveis', route: '#/financeiro/maquininhas', prints: [F + 'Avante_MaquininhasERepasses.png', F + 'Avante_MaquininhasERepasses_VincularMaquininha.png'] },
-      { label: 'Cartões corporativos', route: '#/financeiro/cartoes', prints: [F + 'Avante_CastoesDaEmpresa.png', F + 'Avante_CastaosDaEmpresa_Vincular.png'] },
-      { section: 'Patrimônio' },
-      { label: 'Empréstimos', route: '#/financeiro/emprestimos', prints: [] },
-      { label: 'Investimentos', route: '#/financeiro/investimentos', prints: [F + 'Avante_AplicaçõesFinanceiras.png'] },
-      { label: 'Consórcios', route: '#/financeiro/consorcios', prints: [F + 'Avante_Consorcios.png'] },
-      { label: 'Bens e patrimônio', route: '#/financeiro/bens', prints: [] },
-      { label: 'Contratos', route: '#/financeiro/contratos', prints: [F + 'Avante_ContratosCom dados.png', F + 'Avante_Contrato_MaisInfoQuandoClicaNoContrato.png', F + 'Avante_Contratos_CadastrarContratos.png'] },
-      { section: 'Cadastros' },
-      { label: 'Plano de contas', route: '#/financeiro/plano-de-contas', prints: [F + 'Avante_OperacoesFinanceiras.png', F + 'Avante_OpreracoesFinanceiras02.png', F + 'Avante_OperacaoFinanceira_Despesas01.png', F + 'Avante_EditarOperacaoDereceita.png'] },
-      { label: 'Centros de custo', route: '#/financeiro/centros-de-custo', prints: [F + 'Avante_CentroDeCustos.png', F + 'Avante_CentroDecustos_AdicionarCentro.png'] }
+      { section: 'Consultas', more: true },
+      { label: 'Fluxo de caixa', more: true, route: '#/financeiro/fluxo-de-caixa', prints: [F + 'Avante_EntradaESaidaPordia.png', F + 'Avante_EntradaESaidaPordia02.png'] },
+      { label: 'Conciliação bancária', more: true, route: '#/financeiro/conciliacao', prints: [F + 'Avante_DinheiroDaEmpresa_ConciliacaoBancaria.png'] },
+      { section: 'Meios de pagamento', more: true },
+      { label: 'Maquininhas e recebíveis', more: true, route: '#/financeiro/maquininhas', prints: [F + 'Avante_MaquininhasERepasses.png', F + 'Avante_MaquininhasERepasses_VincularMaquininha.png'] },
+      { label: 'Cartões corporativos', more: true, route: '#/financeiro/cartoes', prints: [F + 'Avante_CastoesDaEmpresa.png', F + 'Avante_CastaosDaEmpresa_Vincular.png'] },
+      { section: 'Patrimônio', more: true },
+      { label: 'Empréstimos', more: true, route: '#/financeiro/emprestimos', prints: [] },
+      { label: 'Investimentos', more: true, route: '#/financeiro/investimentos', prints: [F + 'Avante_AplicaçõesFinanceiras.png'] },
+      { label: 'Consórcios', more: true, route: '#/financeiro/consorcios', prints: [F + 'Avante_Consorcios.png'] },
+      { label: 'Bens e patrimônio', more: true, route: '#/financeiro/bens', prints: [] },
+      { label: 'Contratos', more: true, route: '#/financeiro/contratos', prints: [F + 'Avante_ContratosCom dados.png', F + 'Avante_Contrato_MaisInfoQuandoClicaNoContrato.png', F + 'Avante_Contratos_CadastrarContratos.png'] },
+      { section: 'Configuração financeira', more: true },
+      { label: 'Plano de contas', more: true, route: '#/financeiro/plano-de-contas', prints: [F + 'Avante_OperacoesFinanceiras.png', F + 'Avante_OpreracoesFinanceiras02.png', F + 'Avante_OperacaoFinanceira_Despesas01.png', F + 'Avante_EditarOperacaoDereceita.png'] },
+      { label: 'Centros de custo', more: true, route: '#/financeiro/centros-de-custo', prints: [F + 'Avante_CentroDeCustos.png', F + 'Avante_CentroDecustos_AdicionarCentro.png'] }
     ]
   },
   {
