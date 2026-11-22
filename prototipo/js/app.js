@@ -105,7 +105,8 @@ window.Router = (function () {
       '<div class="flyout" id="flyout" aria-label="Mais opções do menu">' + flyouts + '</div>' +
       '<div class="sidebar-foot"><a class="pdv-launch" href="#/transicao/pdv" title="Abrir PDV (Alt+1)">' +
         '<span class="pdv-launch-icon">' + icon('monitor', 19) + '</span>' +
-        '<span class="lbl"><span class="pdv-launch-title">Abrir PDV</span><span class="pdv-key">Alt+1</span></span></a></div>' +
+        '<span class="lbl"><span class="pdv-launch-title">Abrir PDV</span></span>' +
+        '<span class="pdv-launch-arrow" aria-hidden="true">' + icon('arrowRight', 17) + '</span></a></div>' +
     '</aside>';
   }
 

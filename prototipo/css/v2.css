@@ -226,3 +226,14 @@ body { background: var(--canvas-art); background-attachment: fixed; }
 
 /* v2.5: ícone do "Abrir PDV" sem o quadrado em volta */
 .pdv-launch-icon { background: none; width: auto; height: auto; padding: 0 4px 0 6px; border-radius: 0; }
+
+/* ---------- v2.6: "Abrir PDV" em pílula (ícone + texto + seta), como a referência ---------- */
+.pdv-launch { min-height: 52px; padding: 0 20px 0 18px; gap: 12px; border-radius: 999px; background: var(--gradient-pill); box-shadow: var(--shadow-brand); }
+.pdv-launch:hover { background: var(--gradient-pill); filter: brightness(1.08); }
+.pdv-launch-icon { padding: 0; }
+.pdv-launch .lbl { flex-direction: row; align-items: center; }
+.pdv-launch-title { font-size: 15px; font-weight: 700; }
+.pdv-launch-arrow { display: inline-flex; margin-left: auto; color: hsl(var(--primary-foreground)); transition: transform .15s; }
+.pdv-launch:hover .pdv-launch-arrow { transform: translateX(3px); }
+.shell.is-collapsed .pdv-launch { padding: 0; min-height: 48px; }
+.shell.is-collapsed .pdv-launch-arrow { display: none; }
