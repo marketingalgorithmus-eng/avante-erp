@@ -75,3 +75,7 @@
 /* Teste: símbolo do menu maior, encostado no canto inferior direito (cortado pela borda) */
 .deco-sidebar { left: auto; right: -70px; bottom: -40px; transform: none; height: 300px; color: hsl(var(--sidebar-foreground) / .18); }
 .shell.is-collapsed .deco-sidebar { right: -30px; bottom: -12px; height: 90px; }
+
+/* Logo do topo: peça de apoio e "ERP" em branco */
+.topbar .logo-mark .logo-ink { fill: hsl(var(--primary-foreground)); }
+.topbar .logo-erp { color: hsl(var(--primary-foreground)); opacity: 1; }
