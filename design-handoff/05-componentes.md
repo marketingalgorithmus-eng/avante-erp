@@ -1,14 +1,14 @@
-# 05 · Componentes
+# 05 · Componentes (v3)
 
-> Implementação de referência: `prototipo/js/ui.js` (funções que retornam HTML) + `prototipo/css/components.css` e `theme.css`. Em React, crie um componente para cada item abaixo e **use-o em todas as telas**: nenhuma tela pode ter estilo próprio para estes elementos.
+> Implementação de referência: `prototipo/js/ui.js` (funções que retornam HTML) + `prototipo/css/components.css`, `theme.css`, `v2.css` e `v3.css` (os dois últimos têm a camada visual atual). Em React, crie um componente para cada item abaixo e **use-o em todas as telas**: nenhuma tela pode ter estilo próprio para estes elementos.
 
 ## Índice
-1. AppShell · 2. Topbar · 3. Sidebar · 4. PageHeader · 5. Button · 6. Badge · 7. Tabs / Segmented · 8. Card · 9. KpiCard · 10. FilterBar · 11. DataTable · 12. EmptyState · 13. Field · 14. FormSection · 15. Modal / Sheet / Confirm · 16. DescriptionList · 17. Charts · 18. CommandPalette · 19. Dropdown menu · 20. Skeleton · 21. Banner / Info · 22. UnsavedBar · 23. Logo
+1. AppShell · 2. Topbar · 3. Sidebar (+ Flyout e PdvLaunch) · 4. PageHeader · 5. Button · 6. Badge · 7. Tabs / Segmented · 8. Card · 9. KpiCard · 10. FilterBar · 11. DataTable · 12. EmptyState · 13. Field · 14. FormSection · 15. Modal / Sheet / Confirm · 16. DescriptionList · 17. Charts · 18. CommandPalette · 19. Dropdown menu · 20. Skeleton · 21. Banner / Info · 22. UnsavedBar · 23. Logo · 24. AvanteDeco · 25. HeroBanner · 26. BigCard · 27. FinancialCalendar · 28. FocusList e ActivityList · 29. MoneyBlock
 
 ---
 
 ### 1. AppShell
-- Grid `268px | 1fr` (84px recolhido). Topbar sticky em cima, menu sticky à esquerda, `main` rolando.
+- Grid `268px | 1fr` (84px recolhido). Topbar sticky em cima, menu sticky à esquerda (a 12px das bordas), `main` rolando. O `body` usa o fundo de manchas `--canvas-art`.
 - Três layouts: **app** (topbar + menu), **pdv** (topbar própria do PDV, sem menu lateral) e **bare** (login e telas de transição, tela cheia).
 - O layout vem da rota (ver 06-layout-navegacao.md).
 
@@ -16,21 +16,27 @@
 | Parte | Especificação |
 |---|---|
 | Botão menu | Ícone em círculo branco de 38px com sombra. Desktop: recolhe o menu. Celular: abre a gaveta |
-| Logo | Componente Logo com sufixo "ERP" e link para `/painel` |
+| Logo | Componente Logo com sufixo "ERP" e link para `/painel` (peça de apoio e "ERP" brancos com realce leve; ver 02 §1) |
 | Busca global | Pílula branca de 40px com sombra; abre a CommandPalette; `Ctrl K` |
 | Criar | Botão primário com `+` que abre um Dropdown com 8 ações (ver 06) |
 | Assistente | Botão secundário com ícone de balão (oculto < 1024px) |
 | Notificações | Botão ícone circular branco |
-| Usuário | Pílula branca: avatar preto de 32px + nome + chevron; menu com perfil, "Alternar tema escuro", "Configurações", "Ver boas-vindas" e "Sair" |
+| Usuário | Pílula branca: avatar **marinho** de 32px + nome + chevron; menu com perfil, "Alternar tema escuro", "Configurações", "Ver boas-vindas" e "Sair" |
 
 ### 3. Sidebar
 - Props: `items[]` (`{label, icon, route}` ou `{label, icon, children[]}`; os filhos podem ser `{section: "Título"}`), `activeRoute`, `collapsed`.
 - Grupos em acordeão; mais de um pode ficar aberto; o grupo da rota ativa abre sozinho.
-- Seletor de empresa no topo e "Abrir PDV" no rodapé (ver 04 §3).
+- Dois blocos: **painel azul sólido** (seletor de empresa, itens e o símbolo em linhas no canto inferior direito) e, 12px abaixo, o **bloco do PDV** (`PdvLaunch`). Medidas e cores em 04 §3.
+- Item ativo: **pílula branca com texto azul**; subitem ativo: branco a 18% com texto branco.
+- Grupo com itens `more: true` (Financeiro): os itens de uso diário ficam no menu; os demais aparecem no **Flyout** aberto pelo subitem "Mais do financeiro" (borda tracejada).
+
+**Flyout** (painel secundário): props `groupId`, `title`, `sections[]`. 272px, à direita do menu, fundo `#F0F6FF`, link ativo azul sólido com texto branco. Abre pelo botão "Mais do financeiro" ou por `?menu=financeiro`; fecha com X, clique fora, `Esc` e ao navegar. `role="dialog"`/`aria-label`, botão com `aria-expanded`.
+
+**PdvLaunch**: pílula de 52px marinho sólido, ícone de monitor 19px + "Abrir PDV" (DM Sans 15px/700) + seta à direita; hover azul e seta desliza 3px. Recolhido: só o ícone, centralizado.
 - Acessibilidade: `<nav aria-label="Menu principal">`, `aria-expanded` nos grupos, `aria-current="page"` no item ativo.
 
 ### 4. PageHeader
-- Anatomia: breadcrumbs (12px, cinza, separados por chevron) → **título h1** (26px/700) com badge opcional → subtítulo (13px, cinza). Ações à direita, alinhadas pela base.
+- Anatomia: breadcrumbs (12px, cinza, separados por chevron) → **título h1** (DM Sans 28px/800, −0.03em) com badge opcional → subtítulo (13px, cinza). Ações à direita, alinhadas pela base.
 - Regra: no máximo **1 botão primário**, sempre o último à direita. O restante é outline.
 
 ### 5. Button
@@ -51,18 +57,18 @@
 | Rascunho, Cancelado, Arquivado, módulos | `cancelled` |
 
 ### 7. Tabs / Segmented
-- `Tabs variant="pills"`: trilho cinza, ativo preto (filtros de status, sub-abas de modal, áreas de relatórios). Item: `{id, label, icon?, count?}`.
+- `Tabs variant="pills"`: trilho `--muted`, ativo **marinho** com texto branco (filtros de status, sub-abas de modal, áreas de relatórios). Item: `{id, label, icon?, count?}`.
 - `Tabs variant="underline"`: seções de página (Conciliação, Configurações, Análises, Fichas técnicas × Insumos).
 - `Segmented`: escolha única dentro de formulário ou de período. `role="group"`, botões com `aria-pressed`.
 - O estado da aba fica **na URL** (`?tab=` ou `?status=`), para que todo estado seja linkável.
 
 ### 8. Card
 - Props: `title?`, `icon?`, `actions?[]`, `children`, `footer?`, `flush?` (corpo sem padding).
-- Variações de superfície: `default`, `tile`, `accent` (gradiente azul) e `dark` (gradiente tinta). Ver 04 §4.
+- Variações de superfície: `default` (branco), `tile` (com borda, raio 16px), `accent` (**azul sólido** + símbolo em linhas), `dark` (**marinho sólido**), `soft-sky` e `soft-indigo`. Ver 04 §4. Nenhuma usa degradê.
 
 ### 9. KpiCard
-- Anatomia: rótulo (13px, cinza) + ícone à direita → **valor** (28px/700, tabular) → meta (12px; partes em negrito) **ou** "split" (duas colunas separadas por linha tracejada, ex.: Vencidos | Parcelas).
-- Props: `label`, `value`, `raw` (valor numérico para saber se é zero), `tone` (`default | accent | dark | success | error`), `help?` (ícone "?" com title), `href?` (o cartão inteiro vira link), `meta?`.
+- Anatomia: rótulo (13px, cinza) + ícone à direita → **valor** (DM Sans 28px/700, tabular) → meta (12px; partes em negrito) **ou** "split" (duas colunas separadas por linha tracejada, ex.: Vencidos | Parcelas).
+- Props: `label`, `value`, `raw` (valor numérico para saber se é zero), `tone` (`default | accent | dark | soft-sky | soft-indigo | success | error`), `help?` (ícone "?" com title), `href?` (o cartão inteiro vira link), `meta?`.
 - **Valor zero fica em cinza** (`--muted-foreground`), exceto nos tons accent e dark.
 - O grid de KPIs ocupa 4 colunas (2 em telas médias e 1 no celular).
 
@@ -101,8 +107,8 @@
 
 ### 17. Charts
 - `LineChart({labels, series:[{name, cls, values}]})`: SVG de 640×200, 4 linhas de grade, eixo Y em R$ e eixo X com 3 rótulos (início, meio e fim).
-- `BarChart` diário (Painel): pares de barras entradas/saídas.
-- `BarList(rows)`: rótulo + valor à direita + trilho em pílula com preenchimento em gradiente.
+- `BarChart` diário (Painel): pares de barras, entradas em azul e saídas em índigo a 70%.
+- `BarList(rows)`: rótulo + valor à direita + trilho em pílula com preenchimento **azul sólido**.
 - `ChartEmpty`: bloco cinza "Nenhum valor neste conjunto."
 - Biblioteca sugerida em React: Recharts, com as cores vindas dos tokens.
 
@@ -125,7 +131,30 @@
 - Faixa âmbar dentro do modal: "**Há alterações não salvas.** Deseja descartá-las?" + "Continuar editando" (outline) + "Descartar e fechar" (destrutivo outline). Aparece ao clicar em "Cancelar" ou fechar com dados preenchidos.
 
 ### 23. Logo
-- Props: `suffix` (`"ERP" | "PDV"`). Ver 02-identidade-marca.md. `role="img"` e `aria-label="Avante ERP"`.
+- Props: `suffix` (`"ERP" | "PDV"`), `variant` (`topbar | onBlue | mark`). Ver 02-identidade-marca.md. `role="img"` e `aria-label="Avante ERP"`.
+
+### 24. AvanteDeco
+- Props: `variant` (`fill | line`), `className` (posição). SVG `viewBox="-1 -1 42 34"` com os 2 paths da logo; `fill="currentColor"` ou contorno de 1,5px com `vector-effect="non-scaling-stroke"`. Sempre `aria-hidden` e `pointer-events: none`. Posições e cores em 04 §12.
+
+### 25. HeroBanner
+- Só no Painel. Cartão azul sólido com 2 `AvanteDeco`, avatar branco 48px, linha de contexto, frase DM Sans 24px/700 com o número em `--primary-tint`, segmentado de período (trilho `--primary-active`, ativo branco) e botão branco "Exportar resumo". Ver 04 §5.
+
+### 26. BigCard
+- Cartão branco `padding: 22px 24px` com cabeçalho: título DM Sans 21px/700 + subtítulo 12px; à direita, ações, navegação ou contador (40×40, raio 14px, azul sólido, branco 18px/700). Usado em: Calendário financeiro, O que precisa da sua atenção, Últimas ações, Entradas e saídas.
+
+### 27. FinancialCalendar
+- Cabeçalho: selo de 46px (raio 14px, azul sólido, ícone de calendário branco 18px) + "Calendário financeiro" / "Vencimentos e movimentos de caixa"; navegação com 2 botões-ícone brancos e o mês em DM Sans 15px/700 ("Novembro de 2026").
+- Grade de 7 colunas (Dom…Sáb, 12px/600 muted), `gap: 8px`; célula de 48px, raio 12px, borda `--border`, número 15px/600. Hover: borda azul a 45% e fundo `--primary-subtle` a 60%.
+- Dia com movimento (ponto de 6px): mais entradas `#E7F0FE`/`#0D48A0`; mais saídas `#ECEDFE`/`#3F49D5`; valores iguais `#E6F5FE`/`#098BE1`. **Hoje**: anel `0 0 0 2px` azul. **Selecionado**: azul sólido, texto branco, `--shadow-brand`.
+- Ao clicar num dia: faixa de detalhe (branca, borda, raio 14px) com a data, "Entradas R$ …", "Saídas R$ …" e [Ver movimentações →]. Legenda: Mais entradas · Mais saídas · Valores iguais · Hoje.
+- Cada célula é um `button` com `aria-label` ("20 de Novembro: entradas R$ 1.000,00, saídas R$ 0,00").
+
+### 28. FocusList e ActivityList
+- **FocusList** ("O que precisa da sua atenção"): linhas `padding: 14px 16px`, `gap: 14px`, raio 16px, brancas com borda; ícone de 44px (raio 14px) âmbar (`--status-warning`) para alerta ou azul (`--primary-subtle`) para informação; título 15px/650 + texto 13px muted; ação em botão pequeno (primário para alerta, outline para informação) com chevron. Abaixo, pílulas "ok" de 32px (`#E7F0FE`, texto `#0D48A0`, ícone de check): "Nada vence hoje", "Estoque acima do mínimo".
+- **ActivityList** ("Últimas ações"): linhas `padding: 12px`, raio 14px, ícone de 38px (raio 12px) índigo sobre `#ECEDFE`, título 600 + referência e data 12px muted, chevron; hover `--accent`.
+
+### 29. MoneyBlock
+- BigCard "Entradas e saídas" com legenda (Entradas azul · Saídas índigo): à esquerda o `BarChart` diário; à direita 4 `money-stat` (raio 14px, borda, `padding: 12px 16px`, rótulo 13px muted + valor DM Sans 17px/700): Entradas, Saídas, **Saldo ao final** (azul sólido, texto branco, valor 20px, `--shadow-brand`) e Resultado operacional; botões [Ver movimentações] e [ghost Mais gráficos].
 
 ---
 

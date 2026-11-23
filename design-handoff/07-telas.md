@@ -9,12 +9,12 @@
 ## A. Acesso
 
 ### A1. Login — `/login` (layout bare)
-- Duas colunas. **Esquerda:** painel em `--gradient-brand` com a logo branca, a frase "ERP e PDV na nuvem para vender, controlar o estoque e acompanhar o financeiro no mesmo lugar." e 3 itens translúcidos ("Venda registrada no PDV", "Estoque atualizado", "Entradas e saídas no financeiro"). **Direita:** formulário de 400px.
-- Formulário: ícone de cadeado em caixa · título "Entre na sua conta" (24px/700) · E-mail ou usuário* · Senha* (com link "Esqueci minha senha" na mesma linha do label) · checkbox "Manter conectado neste aparelho" (ajuda: "Use esta opção só em um aparelho de confiança.") · caixa de verificação de segurança · **[P] Entrar →** (largura total, 44px) · info "Problemas com seu acesso? Peça ao responsável pela empresa para conferir seu cadastro."
+- Duas colunas. **Esquerda:** painel **azul sólido** com a logo toda branca, dois símbolos da Avante (preenchido no canto inferior direito, em linhas no superior esquerdo), a frase em DM Sans 26px/700 a frase "ERP e PDV na nuvem para vender, controlar o estoque e acompanhar o financeiro no mesmo lugar." e 3 itens translúcidos ("Venda registrada no PDV", "Estoque atualizado", "Entradas e saídas no financeiro"). **Direita:** formulário de 400px.
+- Formulário: ícone de cadeado em caixa · título "Entre na sua conta" (DM Sans) · E-mail ou usuário* · Senha* (com link "Esqueci minha senha" na mesma linha do label) · checkbox "Manter conectado neste aparelho" (ajuda: "Use esta opção só em um aparelho de confiança.") · caixa de verificação de segurança · **[P] Entrar →** (largura total, 44px) · info "Problemas com seu acesso? Peça ao responsável pela empresa para conferir seu cadastro."
 - Celular: só o formulário.
 
 ### A2. Transições — `/transicao/pdv` e `/transicao/erp`
-- Tela cheia com fundo canvas e brilhos radiais suaves em azul-claro. No centro: símbolo da logo num quadrado branco de 64px (raio 20px, sombra) · "Avante PDV" ou "Avante ERP" (16px/600) · "Abrindo o ponto de venda" ou "Carregando seu espaço" · barra de progresso de 72px animada em azul. Redireciona em ~900ms.
+- Tela cheia com o fundo de manchas azuis e o símbolo da Avante em linhas, grande, a 10%, cortado no canto inferior direito. No centro: símbolo da logo num quadrado branco de 64px (raio 20px, `--shadow-pop`) · "Avante PDV" ou "Avante ERP" (16px/600) · "Abrindo o ponto de venda" ou "Carregando seu espaço" · barra de progresso de 72px animada em azul. Redireciona em ~900ms.
 
 ### A3. Boas-vindas — modal no Painel (`/painel?modal=boas-vindas`)
 - "Hoje na sua empresa", subtítulo "João Pertile". Dois cartões lado a lado: **A receber** (fundo azul-claro) e **A pagar** (fundo vermelho-claro), cada um com R$ 0,00 grande e as linhas Hoje / Em atraso. Rodapé: "Resumo exibido ao entrar no sistema." + **[P] Continuar**.
@@ -23,22 +23,23 @@
 
 ## B. Painel — `/painel`
 
-Ordem dos blocos:
-1. **Cartão de boas-vindas (hero):** avatar preto "R" · linha "Olá, Responsável · João Pertile · 22/10/2026 — 20/11/2026 · atualizado às 10:31" · frase **"Você tem 2 pendências hoje: nenhuma conta bancária ativa e o Orçamento #2 em aberto."** ("2 pendências" em azul) · à direita, o segmentado Hoje / 7 dias / 30 dias (ativo) / 90 dias e [O] Exportar resumo.
-2. **Atalhos rápidos** (cartão): título + "Use Alt + número" + [ghost] Personalizar. Grid de 8 tiles (8 colunas ≥ 1360px, 4 abaixo, 2 no celular): **Abrir PDV** (tile em gradiente azul, texto branco), Nova venda, Novo orçamento, Conta a pagar (ícone vermelho), Conta a receber (ícone azul), Registrar despesa, Novo cliente, Novo produto. Cada tile tem ícone em caixa, rótulo e `Alt+n`.
-3. **Indicadores principais** ("Últimos 30 dias"), 4 KPIs:
-   - **Vendas** — cartão **em gradiente azul**: R$ 0,00 · "0 vendas · Ticket médio R$ 0,00".
-   - **Contas a receber · hoje e 7 dias**: R$ 0,00 · divisão Vencidos R$ 0,00 | Parcelas 0.
-   - **Contas a pagar · hoje e 7 dias**: idem.
-   - **Alertas de estoque** — cartão **escuro**: "0 itens abaixo do mínimo" · "1 item ativo · 20 unidades em estoque".
-4. **Pendências e atenção** (contador 2): faixa de aviso "Nenhuma conta bancária ativa. Cadastre uma conta para registrar recebimentos e usar a conciliação bancária." + [O] Cadastrar conta. Depois 4 cartões (4 colunas, 2 em telas médias, 1 no celular):
-   - Vencimentos de hoje (0) — vazio "Nada vence hoje." + links Contas a pagar / Contas a receber.
-   - Orçamentos em aberto (1) — item "Orçamento #2 · Salvo em 18/11/2026, 21:39" + [O] Abrir; rodapé "Ver orçamentos ›".
-   - Reposição de estoque (0) — vazio "Nenhum item abaixo do mínimo." + "Defina o estoque mínimo dos produtos para receber alertas de reposição." + links Ver produtos / Abrir inventário.
-   - Últimas ações — "Cadastro atualizado · Produto #2 · 18/11/2026, 21:57"; "Orçamento salvo · Orçamento #2 · 18/11/2026, 21:39".
-5. **Visão conectada** ("Cada venda baixa o estoque e gera entrada no financeiro"): 3 cartões ligados por setas → **Vendas** (Receita líquida R$ 0,00 · Vendas 0 · Ticket médio R$ 0,00) → **Estoque** (Itens vendidos 0 · Itens ativos 1 · Unidades em estoque 20) → **Financeiro** (Entradas R$ 1.000,00 · Saídas R$ 0,00 · **Saldo ao final R$ 1.100,00** em azul; legenda "Ajuste de saldo no período: R$ 100,00"). Abaixo, grid 2fr/1fr: gráfico de barras "Entradas e saídas por dia" (30 dias; só 20/11 = R$ 1.000) e "Resultado do período" (Receita líquida − Custo estimado dos itens − Despesas avulsas = Resultado operacional, tudo R$ 0,00 + nota "Sem vendas no período…").
-6. **Onde você vende** (mantido a pedido): cartão "Localização das vendas" com segmentado Vendas / Clientes com vendas, globo pontilhado girando à esquerda, "Vendas por país" (vazio: "Sem país informado neste período.") e tabela "Vendas por cidade" (# · Cidade · Vendas→, vazia).
-7. Aviso tracejado: "Origem das vendas, categorias mais vendidas, clientes novos e recorrentes, devoluções e situação das vendas foram para **Relatórios › Análises**." + [O] Abrir análises.
+Página com `gap: 22px`. Ordem dos blocos (exatamente esta):
+
+1. **Banner azul** (`HeroBanner`, azul sólido com 2 símbolos da Avante): avatar **branco** "R" (inicial azul) · linha "Olá, Responsável · João Pertile · 22/10/2026 — 20/11/2026 · atualizado às 10:31" · frase em DM Sans 24px **"Você tem 2 pendências hoje: nenhuma conta bancária ativa e o Orçamento #2 em aberto."** ("2 pendências" em azul-claro `#B8D4FF`) · à direita, segmentado Hoje / 7 dias / **30 dias** (ativo) / 90 dias (trilho azul-escuro, ativo branco) e botão branco "Exportar resumo" com ícone de download.
+2. **Atalhos rápidos** (cartão): título + "Use `Alt` + número" + [ghost pequeno] Personalizar. Grid de 8 tiles (8 colunas ≥ 1360px, 4 abaixo, 2 no celular): **Abrir PDV** (tile **azul sólido**, texto branco), Nova venda, Novo orçamento, Conta a pagar, Conta a receber, Registrar despesa, Novo cliente, Novo produto. Cada tile: ícone em caixa de 32px, rótulo e `Alt+n`.
+3. **Indicadores principais** ("Últimos 30 dias"), 4 KPIs (cada cartão é um link):
+   - **Vendas** — **azul sólido** com símbolo em linhas: R$ 0,00 · "**0** vendas · Ticket médio **R$ 0,00**" → `/vendas`.
+   - **Contas a receber · hoje e 7 dias** — fundo céu-claro, ícone de entrada: R$ 0,00 · split Vencidos R$ 0,00 | Parcelas 0 → `/financeiro/contas-a-receber`.
+   - **Contas a pagar · hoje e 7 dias** — fundo índigo-claro, ícone de saída: idem → `/financeiro/contas-a-pagar`.
+   - **Alertas de estoque** — **marinho sólido**: "0 itens abaixo do mínimo" · "**1** item ativo · **20** unidades em estoque" → `/catalogo/produtos`.
+4. **Calendário financeiro** (`FinancialCalendar`, cartão grande): selo azul + "Calendário financeiro" / "Vencimentos e movimentos de caixa"; navegação "Novembro de 2026"; grade Dom–Sáb. **20/11/2026 é "hoje"** (anel azul) e tem movimento: **mais entradas** (azul-claro, entradas R$ 1.000,00, saídas R$ 0,00). Clicar num dia mostra a faixa de detalhe com [Ver movimentações →]. Legenda: Mais entradas · Mais saídas · Valores iguais · Hoje.
+5. **Atenção e atividade** (2 cartões grandes lado a lado; empilham < 1100px):
+   - **O que precisa da sua atenção** — "2 itens pedem ação hoje" + contador azul "2". Linhas: (âmbar, banco) **Nenhuma conta bancária ativa** · "Cadastre uma conta para registrar recebimentos e usar a conciliação bancária." · **[P] Cadastrar conta ›** (`/financeiro/contas-bancarias?modal=nova`); (azul, documento) **Orçamento #2 em aberto** · "Salvo em 18/11/2026, 21:39. Envie ao cliente ou converta em venda." · [O] Abrir › (`/vendas/orcamentos?modal=ver&id=2`). Abaixo, pílulas ok: "✓ Nada vence hoje" e "✓ Estoque acima do mínimo". Sem pendências: estado vazio "Nenhuma pendência hoje." e subtítulo "Tudo em dia por aqui".
+   - **Últimas ações** — "O que foi feito no sistema". Linhas: "Cadastro atualizado · Produto #2 · 18/11/2026, 21:57"; "Orçamento salvo · Orçamento #2 · 18/11/2026, 21:39".
+6. **Entradas e saídas** (`MoneyBlock`): "Últimos 30 dias · 22/10/2026 — 20/11/2026" + legenda. Gráfico de barras diário (30 dias; só 20/11 = R$ 1.000,00 em azul). Ao lado: Entradas **R$ 1.000,00** · Saídas **R$ 0,00** · **Saldo ao final R$ 1.100,00** (cartão azul sólido) · Resultado operacional **R$ 0,00** · [Ver movimentações] [ghost Mais gráficos] (`/relatorios/analises?tab=vendas`).
+7. **Onde você vende** ("Localização das vendas no período", mantido a pedido): cartão "Localização das vendas" com segmentado Vendas / Clientes com vendas, globo pontilhado girando à esquerda, "Vendas por país" (vazio: "Sem país informado neste período.") e tabela "Vendas por cidade" (# · Cidade · Vendas→; vazia: "Nenhuma cidade com vendas no período.").
+
+Carregamento: skeleton (faixa, banner, 4 KPIs, 4 blocos) por ~280ms na primeira visita. Os gráficos que saíram do Painel antigo (origem das vendas, categorias mais vendidas, clientes novos e recorrentes, devoluções, situação das vendas) estão em **Relatórios › Análises**.
 
 ---
 
@@ -192,7 +193,7 @@ Ordem dos blocos:
 ### H5. Fluxo de caixa — `/financeiro/fluxo-de-caixa`
 - Subtítulo "Entradas e saídas por dia." · [O] Relatório do fluxo. Filtros De (20/11/2026) | Até (19/12/2026).
 - KPIs clicáveis com "Ver contas →": A receber · A pagar · Recebimentos vencidos · Pagamentos vencidos (R$ 0,00) + nota.
-- Grid: **Entradas e saídas realizadas** (linha de 30 dias, entradas azul e saídas tinta; "Data consultada · 01/12" + seletor de data; legenda com valores) | **Vencimentos ainda em aberto** (vazio).
+- Grid: **Entradas e saídas realizadas** (linha de 30 dias, entradas azul e saídas índigo; "Data consultada · 01/12" + seletor de data; legenda com valores) | **Vencimentos ainda em aberto** (vazio).
 - Prazos (2 cartões vazios) · Entradas e saídas por área (barra) · **Detalhamento por dia** (Data · Entradas realizadas → · Saídas realizadas → · A receber em aberto → · A pagar em aberto →; 20/11/2026 · R$ 1.000,00 · R$ 0,00 · — · —) · Operações por competência (barra "Teste · Receita") · **Todas as operações por competência** (Operação financeira · Tipo [badge Receita] · Valor nominal →).
 
 ### H6. Despesas avulsas — `/financeiro/despesas-avulsas`

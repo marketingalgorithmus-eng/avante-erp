@@ -1,138 +1,170 @@
-# 04 · Estilos visuais
+# 04 · Estilos visuais (v3)
 
-> Este arquivo descreve **como o design deve parecer e se comportar**. As referências enviadas pela empresa são dashboards "soft" (canvas claro, cartões flutuantes, pílulas pretas, cartões de destaque coloridos e escuros). **Copie o estilo, não as cores**: as cores são só as da logo (03-tokens.md).
+> Valores exatos em [03-tokens.md](03-tokens.md). Aqui está **como** o estilo se aplica, elemento por elemento, exatamente como no protótipo.
 
-## 1. Linguagem geral — "Soft dashboard"
+## 1. Linguagem geral — "Soft corporate dashboard chapado"
 
-| Característica | Como aplicar |
-|---|---|
-| **Canvas** | Toda a área atrás do conteúdo é `--background` (cinza frio `#F0F1F4`). A topbar tem a **mesma cor** do canvas e não tem borda. |
-| **Superfícies flutuantes** | Cartões brancos **sem borda**, raio 18px e `--shadow-card`. Eles parecem "pousados" no canvas. |
-| **Pílulas** | Botões, abas, segmentados, chips, itens de menu, badges e a busca global são **totalmente arredondados** (999px). |
-| **Contraste preto × azul** | Navegação e seleção usam **preto (tinta)**: item ativo do menu, aba ativa, segmentado ativo, avatar. **Ação** usa **azul**: botão primário, links, foco. |
-| **Destaques** | No máximo **1 cartão em gradiente azul** (`--gradient-brand`) e **1 cartão escuro** (`--gradient-ink`) por tela, com texto branco e números grandes. |
-| **Números grandes** | KPIs com 28px/700, tabulares, com rótulo pequeno acima e meta abaixo. |
-| **Respiro** | 18px entre blocos; cartões com padding de 16–20px. Tabelas continuam compactas (linha de 40px). |
-| **Divisores** | Quase não existem. Separe por espaço e por superfície. Só tabelas têm linhas entre registros, e a barra de ferramentas da tabela tem uma linha embaixo. |
+- **Fundo**: todas as telas (inclusive login, carregamento e PDV) usam o mesmo fundo claro com **manchas azuis suaves** (`--canvas-art`, fixo ao rolar).
+- **Superfícies**: cartões **brancos, sem borda**, raio 18px, sombra suave `--shadow-card`, flutuando sobre o fundo.
+- **Cor de marca chapada**: azul institucional `#0A5EE6` **sólido** no menu lateral, no banner do Painel, no KPI de Vendas e nos botões primários. Marinho `#102760` sólido no cartão escuro, nas seleções e no botão "Abrir PDV". **Nenhum degradê em componentes.**
+- **Formas**: tudo que é clicável e cabe numa linha é **pílula** (999px). Campos têm raio 10px.
+- **Tipografia**: títulos e números em **DM Sans** com espaçamento negativo (−0.03em); interface em Inter.
+- **Assinatura**: o **símbolo da Avante** ampliado, preenchido ou em linhas, cortado pela borda, nas superfícies de marca.
+- **Densidade**: tabelas e formulários compactos (linha 40px, input 38px, texto 13–13,5px); Painel e resumos arejados.
 
----
+Hierarquia de cor por tela: superfícies grandes coloridas são raras. Em telas internas, no máximo **1 cartão azul e 1 marinho**. O Painel é a exceção (banner azul, KPI Vendas azul, KPI Estoque marinho, KPIs céu e índigo suaves). Detalhes pequenos em azul sólido são permitidos (selo do calendário, contador, saldo final, dia selecionado, tile do PDV).
 
 ## 2. Topbar (64px)
 
-- Fundo = canvas, sem borda nem sombra.
-- Esquerda: botão do menu (ícone em círculo branco com sombra) e a logo.
-- Centro: **busca global em pílula branca com sombra** (40px de altura, até 420px de largura), ícone de lupa, texto "Buscar telas e ações…" e `kbd` `Ctrl K` à direita.
-- Direita: **"Criar"** (pílula azul com sombra azul), **"Assistente"** (pílula secundária, oculta em tablet), sino (círculo branco com sombra) e **usuário** (pílula branca com avatar preto circular de 32px, nome e chevron).
+- Sticky, **sem borda**, fundo `hsl(var(--background) / .55)` + `backdrop-filter: blur(14px)`; `padding: 0 20px 0 16px`; `gap: 12px`.
+- Da esquerda para a direita: botão de menu (círculo branco de 38px, `--shadow-card`) · **logo** (barra azul + peça branca com realce leve, "vante" azul, "ERP" branco com halo azul; ver [02 §1](02-identidade-marca.md)) · **busca** (pílula branca de 40px, até 420px, `padding: 0 8px 0 14px`, `--shadow-card`, lupa + "Buscar telas e ações…" + `kbd` "Ctrl K") · espaço · **[+ Criar]** (primário 38px) · **Assistente** (secundário, oculto < 1024px) · sino (círculo branco de 38px) · **usuário** (pílula branca de 38px, `padding: 0 10px 0 3px`, avatar marinho de 32px com inicial branca, nome e chevron).
 
-## 3. Menu lateral
+## 3. Menu lateral — dois blocos + painel secundário
 
-- **Painel branco flutuante**: margem de 12px do canvas (esquerda e embaixo), raio 18px, `--shadow-card`, sem borda. Altura = viewport − 76px; fica fixo (sticky) e rola por dentro.
-- **Topo**: seletor "Empresa ativa", um bloco em `--muted` com raio 14px, ícone de prédio azul dentro de um quadrado branco de 32px (raio 10px), rótulo "Empresa ativa" (11px, cinza), nome da empresa (13px/600) e chevron.
-- **Itens principais**: pílulas de 38px, ícone de 17px + rótulo de 13,5px/500. Hover: `--accent`.
-  - **Ativo** (rota sem filhos, ex.: Painel): **pílula preta** (`--sidebar-active`), texto e ícone brancos.
-  - **Grupo que contém a rota ativa**: rótulo e ícone em **azul**.
-- **Subitens**: recuo de 34px, pílulas de 32px, 13px. **Ativo**: pílula azul-clara (`--sidebar-sub-active`) com texto azul (600).
-- **Separadores com título** dentro do Financeiro: "DIA A DIA", "BANCOS E MEIOS", "PATRIMÔNIO", "CADASTROS" (11px, maiúsculas, cinza).
-- **Rodapé**: botão **"Abrir PDV"** com 46px de altura, raio 14px, **fundo `--gradient-brand`**, texto branco 600, ícone de monitor, `kbd` `Alt+1` com borda branca e `--shadow-brand`.
-- **Recolhido** (desktop): 84px de largura, só ícones centralizados; clicar num grupo expande o menu.
-- **Celular/tablet**: vira gaveta de 272px que desliza da esquerda, com fundo escurecido (scrim).
+### 3.1 Painel principal (`.sidebar-panel`)
+- 268px de largura, a 12px das bordas do canvas, **fundo azul sólido `#0A5EE6`**, raio 18px, `--shadow-brand`, `overflow: hidden`.
+- **Seletor de empresa** no topo: caixa `branco / .10` (hover `.16`), raio 14px, `padding: 10px 12px`; ícone num quadrado branco a 14% de 32px; rótulo "Empresa ativa" a 65%; nome 13px/600 branco; chevron.
+- **Itens**: pílula de 38px, `padding: 0 12px`, `gap: 10px`, Inter 13,5px/500, branco a 90%, ícone 17px a 70%.
+  - Hover: fundo `branco / .10`.
+  - **Ativo: pílula branca, texto `#094FB9` 600, `--shadow-pop`.**
+  - Grupo que contém a rota ativa: rótulo branco 650.
+- **Subitens**: recuados, com linha-guia à esquerda (`border-left: 1px solid branco / .14`); pílulas de 32px, 13px, branco a 78%; **ativo: `branco / .18` com texto branco 600**.
+- **"Mais do financeiro"**: último subitem do Financeiro, pílula de 32px com **borda tracejada** `branco / .28`; aberta ou com rota ativa dentro: fundo `branco / .14–.18` e borda sólida.
+- **Arte**: símbolo da Avante **em linhas**, 300px de altura, no **canto inferior direito**, cortado pela borda (`right: -70px; bottom: -40px`), branco a 18%. Recolhido: 90px (`right: -30px; bottom: -12px`).
+
+### 3.2 Bloco do PDV (`.sidebar-foot`)
+- Separado do painel azul, **12px abaixo**, no rodapé.
+- Botão **"Abrir PDV"**: pílula de 52px, **fundo marinho `#102760` sólido**, `padding: 0 20px 0 18px`, `gap: 12px`, `--shadow-brand`; ícone de monitor 19px branco + "Abrir PDV" em DM Sans 15px/700 branco + **seta** à direita (`margin-left: auto`).
+- Hover: fundo `--primary-hover` (azul) e a seta desliza 3px para a direita. Sem brilho, sem textura, sem caixa em volta do ícone.
+- Leva a `/transicao/pdv`.
+
+### 3.3 Painel secundário (`.flyout`)
+- Abre **à direita do menu** (10px de distância), 272px, **fundo azul-claro `#F0F6FF`**, raio 18px, `--shadow-pop`, `padding: 14px 12px`.
+- Cabeçalho: rótulo "FINANCEIRO" em azul, 11px maiúsculas + título "Mais do financeiro" em DM Sans 15px/700 + botão fechar.
+- Seções em 11px maiúsculas a 60% (Consultas, Meios de pagamento, Patrimônio, Configuração financeira).
+- Links: pílulas de 36px, 13,5px/500, cor `#162A5A`; hover fundo branco; **ativo: fundo `#0A5EE6`, texto branco, `--shadow-brand`**.
+- Entrada: `opacity 0→1` + `translateX(-8px → 0)` em 160ms. Fecha com X, clique fora, `Esc` ou ao navegar.
 
 ## 4. Cartões
 
-| Tipo | Visual |
+| Variante | Visual |
 |---|---|
-| **Padrão** | Branco, sem borda, raio 18px, `--shadow-card`. Cabeçalho sem linha divisória (16px 18px 6px): título 15px/650, ações à direita. Corpo com padding de 10px 18px 16px. |
-| **Destaque azul** (`kpi-accent`) | Fundo `--gradient-brand`, texto branco, rótulos e meta a 85% de opacidade, `--shadow-brand`. Badges internos em branco a 16%. |
-| **Destaque escuro** (`kpi-dark` / `kpi-highlight`) | Fundo `--gradient-ink`, texto branco. Usado em "Alertas de estoque" (Painel), "Saldo ao final" (Movimentações), "Dinheiro esperado" (PDV) e "Saldo ao final" (Análises). |
-| **Tile** (atalhos, blocos internos) | Fundo `--muted`, sem sombra, raio 14–16px. Hover: fica branco, ganha borda `--border` e sombra. |
-| **Boas-vindas / hero** (Painel) | Cartão padrão com avatar preto circular de 44px, linha pequena em cinza (saudação + empresa + período) e uma **frase grande** (20px/650) com o número de pendências **em azul e negrito**. Período e "Exportar resumo" à direita. |
+| **Padrão** | Branco, sem borda, raio 18px, `--shadow-card` |
+| **Banner azul** (`.hero-blue`, só no Painel) | Ver §5 |
+| **KPI** | `padding: 18px 20px`, `gap: 8px`: rótulo 13px/500 + ícone 16px à direita → valor DM Sans 28px/700 → meta 12px ou "split" (2 colunas separadas por linha tracejada `1px dashed --border`). Valor zero em `--muted-foreground` |
+| KPI `accent` (Vendas) | Fundo azul sólido, texto branco, `--shadow-brand`, símbolo em linhas (120px, `right: -14px; bottom: -26px`, branco 25%) |
+| KPI `dark` (Estoque) | Fundo marinho sólido `#102760`, texto branco |
+| KPI `soft-sky` / `soft-indigo` | Fundo `#EBF7FE` / `#F0F1FE`, ícone céu / índigo |
+| **Bloco grande** (`.big-card`) | `padding: 22px 24px`; título DM Sans 21px + subtítulo 12px; contador opcional à direita (40×40, raio 14px, azul sólido, número branco 18px/700, `--shadow-brand`) |
+| **Tile de atalho** (`.sc`) | Branco, borda `--border`, raio 16px, `padding: 8px 10px`; ícone em caixa de 32px (raio 10px, fundo subtle do tom); rótulo 13px/600; `kbd Alt+n`. Hover: `--shadow-card`. **Tile "Abrir PDV"**: fundo azul sólido, texto branco, ícone em branco a 18% |
+| **Bloco interno** | Raio 14–16px, 1px `--border`, fundo branco |
 
-## 5. Botões
+## 5. Banner azul do Painel (`.hero.hero-blue`)
 
-| Variante | Visual | Uso |
-|---|---|---|
-| **Primário** | Pílula azul, texto branco 600, `--shadow-brand`; hover `--primary-hover`; ativo `--primary-active` | **Uma por tela**, no canto superior direito |
-| **Outline** | Pílula branca, borda `--border`; hover `--accent` | Ações secundárias |
-| **Secundário** | Pílula `--muted` sem borda | "Assistente", "Buscar" em filtros |
-| **Ghost** | Transparente; hover `--accent` | Ações terciárias, "Personalizar", "Limpar filtros" |
-| **Link** | Texto azul 500, sem altura fixa | Ações dentro de estados vazios |
-| **Destrutivo** | Pílula `--destructive`, texto branco | Confirmar em modal destrutivo |
-| **Destrutivo outline** | Pílula branca, borda vermelha a 30%, texto `--status-error-fg`; hover `--status-error` | "Arquivar", "Anular", "Estornar venda", "Registrar saída", "Remover" |
-| **Ícone** | Círculo de 36px (30px pequeno) | Ações de linha, fechar modal |
+- Cartão **azul sólido `#0A5EE6`**, `padding: 28px 32px` (22×20px < 760px), `gap: 20px`, `--shadow-brand`, `overflow: hidden`, raio 18px.
+- Avatar **branco** de 48px com a inicial em azul (17px).
+- Linha de contexto 12,5px branco a 82%: "Olá, Responsável · João Pertile · 22/10/2026 — 20/11/2026 · atualizado às 10:31".
+- Frase DM Sans **24px/700**, line-height 1.2, branca; o número ("2 pendências") em **azul-claro `#B8D4FF`**.
+- À direita: **segmentado** com trilho `--primary-active` (`#0746AB`), botões branco a 85%, **ativo branco com texto azul**; botão **branco** com texto azul e raio 10px ("Exportar resumo"; hover `--primary-tint`).
+- **Arte**: símbolo **preenchido** `right: -5%; top: -45%; height: 190%`, cor `#B8D4FF` a 38% + símbolo **em linhas** `right: 9%; bottom: -80%; height: 150%`, branco a 16%. No celular: preenchido `right: -20%; top: -10%; height: 110%` e o de linhas some.
 
-Os botões podem ter ícone (15px) à esquerda e `kbd` à direita (ex.: "Nova venda F3").
+## 6. Botões
 
-## 6. Abas, segmentados e chips
+| Variante | Visual |
+|---|---|
+| **Primário** | Azul `#0A5EE6` sólido, texto branco 600, `--shadow-brand`; hover `#0852C9`; pressionado `#0746AB` |
+| **Outline** | Branco, borda 1px `--border`, texto foreground; hover `--accent` |
+| **Secundário** | `--secondary`, texto foreground |
+| **Ghost** | Transparente; hover `--accent` |
+| **Destrutivo** | `#D92D20`, texto branco |
+| **Destrutivo outline** | Branco, borda vermelha a 30%, texto `#B42318`; hover `--status-error` |
+| **Link** | Texto azul 500, sublinha no hover |
 
-- **Abas em pílula** (filtros de status, sub-abas de modal): trilho `--muted` com padding de 3px e raio 999px. Cada opção é uma pílula de 30px; a **ativa é preta** (`--ink`) com texto branco 600. Os contadores aparecem como mini-pílula dentro da aba.
-- **Abas sublinhadas** (seções de página, ex.: "Extrato geral · A conciliar · Conciliados"): texto cinza; a ativa fica em tinta com **sublinhado preto de 2px**.
-- **Segmentado** (período "Hoje · 7 dias · 30 dias · 90 dias", disponibilidade de estoque): igual às abas em pílula. Em campos de formulário, o segmentado ocupa a largura toda; a opção "Fora de estoque" ativa fica vermelho-clara.
-- **Chips** (atalhos para telas relacionadas, filtros aplicados): pílula branca com sombra, 28px.
+Todos em **pílula**, 36px (pequeno 30px, grande 44px), `padding: 0 16px` (pequeno `0 12px`, grande `0 20px`), `gap: 6px`, ícone 15px, transição de 120ms, desabilitado com opacidade .5. Botão de ícone: círculo 36×36 (30×30).
 
-## 7. Campos de formulário
+## 7. Abas, segmentados, chips e contadores
 
-- Label **acima** (12px/500), asterisco vermelho nos obrigatórios e "(opcional)" em cinza nos opcionais.
-- Input com 38px, raio 10px, borda `--input` e fundo branco. Foco: borda `--ring` + halo `0 0 0 3px hsl(var(--ring)/.15)`.
-- Afixos dentro do campo: `R$` à esquerda (valores, alinhados à direita e tabulares), `%` à direita, lupa nas buscas.
-- Ajuda abaixo do campo (11,5px, cinza); o erro ocupa o mesmo lugar em vermelho.
-- Seções de formulário com título de 13,5px/600 e descrição de 12px, separadas por linha sutil; seções opcionais **recolhíveis** (`<details>`) com chevron.
-- Grid de 12 colunas e gap de 12px; campos curtos ocupam 6 colunas. No celular, tudo ocupa as 12.
-- Dropzone: borda tracejada `--input`, fundo `--muted` a 50%, raio 14px, ícone, texto e botão "Adicionar…".
-- Switch (32×18) azul quando ligado; checkbox com `accent-color: primary`.
+- **Abas em pílula**: trilho `--muted`, `padding: 3px`, `gap: 2px`; aba de 30px, `padding: 0 14px`, 13px/500 muted; **ativa: marinho `#102760` com texto branco 600**; contador em mini-pílula de 18px.
+- **Abas sublinhadas** (dentro de modais): 36px; ativa em foreground com borda inferior de 2px marinho.
+- **Segmentado**: igual às abas em pílula (`aria-pressed`). No banner azul, segue §5.
+- **Chip**: pílula de 28px branca com `--shadow-card`, 12,5px/500.
+- **Contador**: pílula de 18–20px, 11–12px/600; `.is-alert` com as cores de pendente.
 
-## 8. Tabelas
+## 8. Campos de formulário
 
-- Dentro de cartão (raio 18px, `overflow: hidden`).
-- Barra de ferramentas no topo (abas de status em pílula + busca/ações), com uma linha `--border` embaixo.
-- Cabeçalho **sem fundo**: 11px, 600, maiúsculas, cinza.
-- Linha de 40px; hover `--accent` a 60%; padding lateral de 16px nas pontas.
-- Texto à esquerda; **números, valores e datas à direita** e tabulares.
-- Célula principal com duas linhas: nome (500) e subinformação (12px, cinza). Miniatura de 28px com ícone azul sobre `--primary-subtle`.
-- Ações da linha à direita: botões pequenos ou ícones.
-- Rodapé sem linha: "N registros" à esquerda e paginação "Anterior · Página 1 · Próxima" à direita.
-- Estado vazio **dentro** da tabela: ícone num quadrado de 32px, título, texto e ação.
+- Input e select: 38px, raio 10px, borda `--input`, fundo branco, 13,5px, `padding: 0 10px` (select `0 28px 0 10px` com seta).
+- **Foco**: borda azul + halo `0 0 0 3px hsl(var(--ring) / .15)`. Desabilitado ou só leitura: fundo `--muted`.
+- Label 12px/500 **acima**; obrigatório com `*` vermelho; "(opcional)" em 400 muted; ajuda ou erro 11,5px abaixo.
+- Afixos `R$` e `%` em 12,5px muted; valores à direita e tabulares.
+- Checkbox 16px (`accent-color: primary`); switch 32×18 (ligado azul); dropzone com borda tracejada `--input`, fundo `--muted` a 50%, raio 14px, mín. 120px.
+- Seção de formulário: título 13,5px/600 + descrição 12px, separada por 1px `--border`, recolhível com chevron que gira 180°.
 
-## 9. Modais
+## 9. Tabelas
 
-- Raio 22px, sem borda, `--shadow-modal`; overlay tinta a 35% com blur de 3px.
-- Cabeçalho sem linha: título 18px/650, subtítulo cinza e botão fechar circular.
-- Rodapé com linha superior: ações secundárias à esquerda e Cancelar + primário à direita.
-- **Painel lateral** (formulários longos): entra pela direita, 680px, altura total, raio 22px só nos cantos esquerdos.
-- **Confirmação destrutiva**: modal `sm`, texto explicando a consequência (com o nome do item em negrito), "Voltar" + botão vermelho com o verbo ("Arquivar", "Estornar venda").
-- Fechar: X, clique no overlay ou `Esc`. O foco vai para o primeiro campo ao abrir.
+- Dentro de cartão (raio 18px, `overflow: hidden`). Barra superior `padding: 12px 16px` com abas de status + "Buscar e filtrar", separada por 1px `--border`.
+- Cabeçalho 32px, 11px/600 maiúsculas +0.04em, muted, **sem fundo**. Linha 40px, 13px. Primeira e última coluna com 16px de padding lateral.
+- Hover `hsl(var(--accent) / .6)`; seleção `--row-selected`; números à direita e tabulares.
+- Célula principal: título 500 + subtítulo 12px muted; miniatura de 28px, raio 12px, `--primary-subtle` com ícone azul.
+- Rodapé `padding: 10px 16px 14px`, 12px muted: "N registros" + paginação em botões pequenos.
+- Tabelas largas rolam **dentro do cartão**; a página nunca rola na horizontal.
 
-## 10. Gráficos
+## 10. Modais
 
-- **Entradas, receita e saldo**: linha ou barra **azul** (`--primary`).
-- **Saídas e período anterior**: tinta a 35–45% (linha tracejada).
-- Grade horizontal `--border`; eixos de 10,5px cinza, tabulares; valores em `R$`.
-- Barras de proporção ("Entradas e saídas por área", "Saldos por conta"): trilho de 8px `--muted` em pílula, preenchimento `--gradient-brand`.
-- Gráfico sem dados: bloco `--muted` a 60%, raio 14px, 120px de altura, texto "Nenhum valor neste conjunto."
-- Legenda: quadradinho de 8px + rótulo de 12px.
+- Raio 22px, sem borda, `--shadow-modal`; overlay marinho a 35% + desfoque de 3px.
+- Cabeçalho sem divisória: título DM Sans 18px/650 + subtítulo + botão fechar circular. Rodapé com divisória: ações secundárias à esquerda; Cancelar + primário à direita.
+- Tamanhos `sm` 440 / `md` 640 / `lg` 920 / `xl` 1180; painel lateral de 680px (raio só à esquerda). Tela cheia < 760px.
+- Confirmação destrutiva: `sm`, pergunta no título, consequência no corpo com o nome em negrito, "Voltar" + botão vermelho com o verbo.
 
-## 11. Badges de status
+## 11. Gráficos
 
-Pílula de 22px, 12px/600, fundo suave + texto escuro do mesmo tom (tabela em 03-tokens.md). **Nunca** use só a cor: o texto do status sempre aparece. Ícone opcional de 12px.
+- **Entradas, receita e saldo**: azul `--primary`. **Saídas**: índigo (`hsl(var(--indigo) / .7)` em barras, `--indigo` em linhas). Período anterior: muted tracejado.
+- Grade horizontal 1px `--border`; eixos 10,5px muted, tabulares, em R$; última data alinhada à direita.
+- Barras de proporção: trilho de 8px `--muted` em pílula, preenchimento **azul sólido**.
+- Sem dados: bloco `--muted` a 60%, raio 14px, 120px, "Nenhum valor neste conjunto."
+- Legenda: quadradinho de 8px (raio 2px) + rótulo 12px.
 
-## 12. Estados obrigatórios em toda tela
+## 12. Símbolo decorativo — posições exatas
+
+O contêiner recebe `position: relative; overflow: hidden`; os filhos de conteúdo `position: relative; z-index: 1`; o símbolo `position: absolute; pointer-events: none; width: auto`.
+
+| Onde | Versão | Posição | Cor |
+|---|---|---|---|
+| Banner do Painel | preenchido | `right: -5%; top: -45%; height: 190%` | `hsl(var(--primary-tint) / .38)` |
+| Banner do Painel | linhas | `right: 9%; bottom: -80%; height: 150%` | `hsl(var(--primary-foreground) / .16)` |
+| KPI Vendas | linhas | `right: -14px; bottom: -26px; height: 120px` | `hsl(var(--primary-foreground) / .25)` |
+| Menu lateral | linhas | `right: -70px; bottom: -40px; height: 300px` (recolhido: `-30px`, `-12px`, `90px`) | `hsl(var(--sidebar-foreground) / .18)` |
+| Login (painel azul) | preenchido | `right: -12%; bottom: -8%; height: 62%` | `hsl(var(--primary-tint) / .45)` |
+| Login (painel azul) | linhas | `left: -10%; top: -6%; height: 34%` | `hsl(var(--primary-foreground) / .2)` |
+| Telas de carregamento | linhas | `right: -6%; bottom: -18%; height: 95vh` | `hsl(var(--primary) / .10)` |
+
+## 13. Login e telas de carregamento
+
+- **Login**: duas colunas. Esquerda: painel **azul sólido** com a logo toda branca (36/38px), a frase em DM Sans 26px/700 branca, 3 itens com ícone e os dois símbolos (§12). Direita: formulário de 400px sobre o fundo de manchas. No celular, só o formulário.
+- **Carregamento** (ERP ↔ PDV): fundo de manchas + símbolo em linhas a 10%; no centro, quadrado branco de 64px (raio 20px, `--shadow-pop`) com o símbolo de 30px; "Avante ERP"/"Avante PDV" 16px/600; subtítulo 12,5px muted; barra de 72×2px com segmento azul animado.
+
+## 14. Badges de status
+
+Pílula de 22px, `padding: 0 9px`, 12px/600, fundo suave + texto do mesmo tom ([03 §1.5](03-tokens.md)). O texto do status sempre aparece (nunca só a cor). Ícone opcional de 12px.
+
+## 15. Estados obrigatórios em toda tela
 
 | Estado | Visual |
 |---|---|
-| Carregando | Skeleton no formato final (blocos `--muted` com brilho), nunca spinner em tela cheia |
-| Vazio | Ícone num quadrado de 32px (`--muted`, raio 10px), título de 13px/600, texto curto e ação sugerida (botão azul pequeno ou link) |
+| Carregando | Skeleton no formato final (blocos `--muted` com brilho de 1,2s), nunca spinner em tela cheia |
+| Vazio | Centralizado, `padding: 24px 8px`, `gap: 6px`: ícone em caixa de 32px (`--muted`, raio 10px) → título 13px/600 → texto 12,5px muted → ação (botão primário pequeno ou link) |
 | Vazio por filtro | "Nenhum resultado neste filtro" + "Limpar filtros" |
 | Erro | Mensagem + "Tentar novamente"; erro de campo inline em vermelho |
-| Aviso | Faixa `--status-warning` com raio 12px, ícone de alerta e ação à direita (ex.: "Nenhuma conta bancária ativa. Cadastrar conta") |
-| Alterações não salvas | Faixa âmbar dentro do modal: "Há alterações não salvas." + "Continuar editando" + "Descartar e fechar" (vermelho outline) |
-| Foco | Contorno de 2px `--ring` com afastamento de 1px em todo elemento interativo |
+| Aviso | Faixa raio 12px, `padding: 8px 12px`, ícone + texto + ação à direita, nas cores de status |
+| Alterações não salvas | Faixa âmbar no modal: "Há alterações não salvas." + "Continuar editando" + "Descartar e fechar" (vermelho outline) |
+| Foco | Contorno de 2px `--ring` com afastamento de 1px |
 
-## 13. Iconografia
+## 16. Iconografia
 
-- Estilo **Lucide** (traço de 2px, cantos e terminações arredondados, viewBox 24). Na implementação React, use `lucide-react`.
-- Tamanhos: 13–15px em botões e textos, 16–17px no menu e em KPIs, 18px na topbar.
-- Os ícones herdam a cor do texto. No menu ficam em cinza; no item ativo, brancos.
-- Ícone em caixa (`sc-icon`): 32px, raio 10px, fundo branco (dentro de tile) ou `--primary-subtle`, ícone azul.
+- Estilo **Lucide** (traço 2px, terminações arredondadas, viewBox 24). Em React: `lucide-react`.
+- Tamanhos: 13–15px em botões e textos, 16–17px no menu e em KPIs, 18px na topbar e em linhas de destaque, 19px no "Abrir PDV".
+- Ícones herdam a cor do texto. No menu azul: branco a 70% (ativo: azul).
+- Ícone em caixa: 32px, raio 10px, fundo subtle do tom (azul, céu, índigo ou marinho-claro), ícone na cor do tom.
 
-## 14. Tema escuro
+## 17. Tema escuro
 
-Mesma estrutura com tokens `.dark`: canvas quase preto, cartões grafite **com borda de 1px**, azul mais claro (`#388CFA`) e **pílula ativa invertida** (clara com texto escuro). Os gradientes continuam; o cartão escuro usa grafite (`#20242C`) para se separar do fundo.
+Mesma estrutura, trocando só os tokens (`.dark`): fundo quase preto com manchas azul-escuras, cartões grafite **com 1px de borda**, azul mais claro (`hsl(214 95% 60%)`), menu `hsl(218 70% 24%)`, painel secundário `hsl(220 35% 14%)`, cartão escuro `hsl(223 55% 20%)`. Símbolos e superfícies de marca continuam azuis. Continua chapado e sem verde.

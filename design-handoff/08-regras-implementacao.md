@@ -3,7 +3,7 @@
 ## 1. Regras inegociáveis
 
 1. **Só tokens.** Nenhuma cor HEX, RGB ou HSL literal em componentes. Use `hsl(var(--token))`. A única exceção é o próprio arquivo de tokens.
-2. **Zero verde.** Positivo e sucesso usam o azul (`--status-success`). Se algum verde aparecer, é bug.
+2. **Zero verde, zero preto, zero degradê.** Positivo e sucesso usam o azul (`--status-success`); o escuro é o marinho (`--ink`); superfícies de marca são cores sólidas. O único degradê é o fundo `--canvas-art`.
 3. **Uma ação primária por tela**, no canto superior direito do cabeçalho (no modal, à direita do rodapé).
 4. **Toda ação destrutiva** (arquivar, anular, estornar, cancelar contagem, fechar turno, excluir) abre a **confirmação** antes de executar.
 5. **Fidelidade ao conteúdo:** não invente campos, colunas, filtros, opções nem dados. Tela sem dados = estado vazio. Telas sem print (Empréstimos, Bens e patrimônio, Funcionários e salários) ficam como "aguardando referência".
@@ -26,7 +26,12 @@ theme: {
       muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
       border: 'hsl(var(--border))', input: 'hsl(var(--input))', ring: 'hsl(var(--ring))',
       primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))',
-                 hover: 'hsl(var(--primary-hover))', active: 'hsl(var(--primary-active))', subtle: 'hsl(var(--primary-subtle))' },
+                 hover: 'hsl(var(--primary-hover))', active: 'hsl(var(--primary-active))',
+                 subtle: 'hsl(var(--primary-subtle))', tint: 'hsl(var(--primary-tint))' },
+      sky: { DEFAULT: 'hsl(var(--sky))', subtle: 'hsl(var(--sky-subtle))' },
+      indigo: { DEFAULT: 'hsl(var(--indigo))', subtle: 'hsl(var(--indigo-subtle))' },
+      navy: { DEFAULT: 'hsl(var(--navy))', subtle: 'hsl(var(--navy-subtle))' },
+      flyout: { DEFAULT: 'hsl(214 100% 97%)', foreground: 'hsl(var(--flyout-foreground))' },
       ink: { DEFAULT: 'hsl(var(--ink))', foreground: 'hsl(var(--ink-foreground))' },
       secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
       accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
@@ -45,19 +50,20 @@ theme: {
     },
     borderRadius: { sm: '8px', DEFAULT: '12px', lg: '18px', modal: '22px', pill: '999px' },
     boxShadow: { card: 'var(--shadow-card)', pop: 'var(--shadow-pop)', brand: 'var(--shadow-brand)', modal: 'var(--shadow-modal)' },
-    backgroundImage: { 'gradient-brand': 'var(--gradient-brand)', 'gradient-ink': 'var(--gradient-ink)' },
-    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+    backgroundImage: { canvas: 'var(--canvas-art)' },   // único degradê: fundo da página
+    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['DM Sans', 'Inter', 'sans-serif'],
+                  mono: ['JetBrains Mono', 'monospace'] },
   },
 },
 darkMode: 'class',
 ```
-Copie os blocos `:root` e `.dark` de `prototipo/css/tokens.css` para `globals.css`.
+Copie os blocos `:root` e `.dark` de `prototipo/css/tokens.css` para `globals.css`, **incluindo o bloco v3 do final** (ele sobrescreve o azul, as superfícies `--gradient-*` como cores sólidas, `--shadow-brand`, `--primary-tint` e `--font-display`). No `body`: `background: var(--canvas-art); background-attachment: fixed;`.
 
 ### Ajustes nos componentes shadcn
 | shadcn | Ajuste |
 |---|---|
 | `Button` | `rounded-pill font-semibold h-9 px-4`; `default` = `bg-primary shadow-brand hover:bg-primary-hover`; crie as variantes `danger-outline` e `link` |
-| `Card` | `rounded-lg border-0 shadow-card bg-card` (no escuro: `dark:border`); `CardHeader` sem borda; adicione as variantes `accent` (`bg-gradient-brand text-white shadow-brand`) e `dark` (`bg-gradient-ink text-white`) |
+| `Card` | `rounded-lg border-0 shadow-card bg-card` (no escuro: `dark:border`); `CardHeader` sem borda; adicione as variantes `accent` (`bg-primary text-primary-foreground shadow-brand`, com `AvanteDeco`), `dark` (`bg-ink text-ink-foreground`), `soft-sky` (`bg-sky-subtle`) e `soft-indigo` (`bg-indigo-subtle`) |
 | `Tabs` | `TabsList` = `rounded-pill bg-muted p-[3px]`; `TabsTrigger[data-state=active]` = `bg-ink text-ink-foreground` |
 | `Input`, `Select`, `Textarea` | `h-[38px] rounded-[10px] border-input`; foco `ring-[3px] ring-ring/15 border-ring` |
 | `Badge` | `rounded-pill h-[22px] px-[9px] text-xs font-semibold` + variantes por status |
@@ -69,14 +75,15 @@ Copie os blocos `:root` e `.dark` de `prototipo/css/tokens.css` para `globals.cs
 | `Skeleton` | `bg-muted` |
 | Tabela | `@tanstack/react-table` + componente `DataTable` próprio |
 | Ícones | `lucide-react` |
-| Gráficos | Recharts com cores `hsl(var(--primary))` e `hsl(var(--ink) / .4)` |
+| Gráficos | Recharts: entradas `hsl(var(--primary))`, saídas `hsl(var(--indigo) / .7)` |
+| Títulos | `font-display tracking-[-0.03em]` em h1, títulos de bloco, KPIs, modais e totais |
 
 ## 3. Ordem sugerida de construção
 
-1. Tokens (`globals.css` + `tailwind.config`) e fonte Inter.
-2. Logo, AppShell, Topbar, Sidebar (com o menu completo de 06), roteamento com estado na URL.
+1. Tokens (`globals.css` + `tailwind.config`), fundo `--canvas-art` e fontes DM Sans, Inter e JetBrains Mono.
+2. Logo (com o realce do branco), `AvanteDeco`, AppShell, Topbar, Sidebar azul + Flyout "Mais do financeiro" + PdvLaunch (menu completo de 06), roteamento com estado na URL.
 3. Componentes base: Button, Badge, Card, KpiCard, Tabs, Field, FormSection, FilterBar, DataTable, EmptyState, Modal, Sheet, Confirm, Skeleton.
-4. Painel (é a vitrine do estilo).
+4. Painel (é a vitrine do estilo): HeroBanner, atalhos, KPIs, FinancialCalendar, FocusList/ActivityList, MoneyBlock e localização.
 5. Telas na ordem do menu: Vendas → PDV → Clientes → Catálogo → Fornecedores → Financeiro → Relatórios → Equipe → Configurações.
 6. Tema escuro, responsivo e atalhos de teclado.
 7. Revisão com o checklist abaixo.
@@ -85,9 +92,11 @@ Copie os blocos `:root` e `.dark` de `prototipo/css/tokens.css` para `globals.cs
 
 - [ ] Título e breadcrumbs com o nome aprovado (06/07)
 - [ ] No máximo 1 botão primário; destrutivas com confirmação
-- [ ] Só tokens; nenhuma cor literal; nenhum verde
+- [ ] Só tokens; nenhuma cor literal; nenhum verde, preto ou degradê
 - [ ] Cartões sem borda, raio 18px, sombra suave; botões e abas em pílula
-- [ ] No máximo 1 cartão em gradiente azul e 1 escuro
+- [ ] Títulos e números grandes em DM Sans (−0.03em)
+- [ ] Telas internas: no máximo 1 cartão azul sólido e 1 marinho
+- [ ] Símbolo da Avante só em superfícies de marca, cortado pela borda e `aria-hidden`
 - [ ] Números tabulares e à direita; moeda e datas em pt-BR
 - [ ] Estados: carregando (skeleton), vazio (com ação), erro, com dados
 - [ ] Campos com label acima, obrigatórios com *, ajuda/erro abaixo
@@ -115,11 +124,16 @@ Copie os blocos `:root` e `.dark` de `prototipo/css/tokens.css` para `globals.cs
 |---|---|
 | Deixar o PDV verde ou com tema próprio | PDV no mesmo azul da marca |
 | Badge "Ativo/Pago" verde | Badge azul-claro com texto azul-escuro |
-| Gráfico de entradas verde e saídas vermelho | Entradas em azul, saídas em tinta 40% |
+| Gráfico de entradas verde e saídas vermelho | Entradas em azul, saídas em índigo |
+| Cartão, menu ou botão com degradê | Cor sólida (azul `#0A5EE6` ou marinho `#102760`) |
+| Preto (`#000`, `#12151C`) em texto, avatar ou aba ativa | Marinho `#102760`; texto `#141D34` |
+| Menu lateral branco | Menu **azul sólido** com item ativo em pílula branca |
+| "Abrir PDV" com brilho, pulso ou caixa em volta do ícone | Pílula marinho lisa: ícone + texto + seta |
+| Logo com sombra forte ou contorno grosso | Só o realce leve de 02 §1 |
 | Cartão com borda cinza + sombra forte | Sem borda, `--shadow-card` |
 | Botão retangular com raio 6px | Pílula (999px) |
-| Item ativo do menu em azul | Pílula **preta** (subitem: azul-claro) |
-| Vários cartões coloridos na mesma tela | No máximo 1 azul + 1 escuro |
+| Item ativo do menu em azul ou preto | Pílula **branca com texto azul** sobre o menu azul (subitem: branco a 18%) |
+| Vários cartões coloridos numa tela interna | No máximo 1 azul + 1 marinho (o Painel é a exceção, ver 07 §B) |
 | Modal "Arquivados" separado | Aba Ativos · Arquivados na lista |
 | Inventar colunas onde o print só tem estado vazio | Estado vazio sem tabela (Maquininhas, Cartões, Fichas técnicas) |
 | Mostrar "null" ou datas quebradas do sistema antigo | Corrigir: omitir "null", formatar `dd/mm/aaaa` |

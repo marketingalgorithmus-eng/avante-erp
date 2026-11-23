@@ -1,6 +1,6 @@
 # Avante ERP — Design System (v3)
 
-> **Para a IA que vai ler este arquivo:** este documento é a especificação estrita da identidade visual do **Avante ERP** (ERP + PDV na nuvem da Algorithmus), na versão atual (v3, commit `31d2f53`). Todos os valores foram medidos no protótipo de referência (`prototipo/`, fonte executável em `prototipo/css/tokens.css` → `app.css` → `components.css` → `screens.css` → `theme.css` → `v2.css` → `v3.css`). **Não invente cores, raios, sombras ou fontes.** Use somente o que está aqui. Em caso de dúvida, abra o protótipo (`node prototipo/serve.js` → `http://localhost:5173/prototipo/`).
+> **Para a IA que vai ler este arquivo:** este documento é a especificação estrita da identidade visual do **Avante ERP** (ERP + PDV na nuvem da Algorithmus), na versão atual (v3, commit `7b2d2cb`). Todos os valores foram medidos no protótipo de referência (`prototipo/`, fonte executável em `prototipo/css/tokens.css` → `app.css` → `components.css` → `screens.css` → `theme.css` → `v2.css` → `v3.css`). **Não invente cores, raios, sombras ou fontes.** Use somente o que está aqui. Em caso de dúvida, abra o protótipo (`node prototipo/serve.js` → `http://localhost:5173/prototipo/`).
 
 ---
 
@@ -227,7 +227,11 @@ Números (valores, quantidades, datas, códigos): **sempre `tabular-nums`**, ali
 
 ### 5.1 Topbar
 - 64px; `padding: 0 20px 0 16px`; `gap: 12px`; fundo `hsl(var(--background) / .55)` + `backdrop-filter: blur(14px)`; sem borda.
-- **Logo**: símbolo SVG de 26px + "vante" em Inter 800, 27px, −0.04em, cor `--primary` + "ERP" 9,5px 700, +0.2em, 75% de opacidade.
+- **Logo**: símbolo SVG de 26px (barra em `--primary` + peça de apoio **branca**) + "vante" em Inter 800, 27px, −0.04em, cor `--primary` + "ERP" 9,5px 700, +0.2em, **branco** (opacidade 1).
+  - **Realce leve do branco** (para não sumir no fundo claro):
+    - peça de apoio: `stroke: hsl(var(--primary) / .35); stroke-width: .6px; paint-order: stroke;`
+    - símbolo inteiro: `filter: drop-shadow(0 1px 2px hsl(var(--primary) / .28));`
+    - "ERP": `text-shadow: 0 0 1px hsl(var(--primary) / .9), 0 0 1px hsl(var(--primary) / .9), 0 1px 3px hsl(var(--primary) / .4);`
 - **Busca**: pílula branca de 40px, `max 420px`, `padding: 0 8px 0 14px`, `--shadow-card`, texto muted, `kbd` "Ctrl K".
 - **Criar**: botão primário de 38px. **Ícones** (menu, sino): círculo branco de 38px com `--shadow-card`. **Usuário**: pílula branca de 38px, `padding: 0 10px 0 3px`, avatar marinho de 32px.
 
@@ -333,7 +337,7 @@ AvanteDeco('fill' | 'line', 'classe-de-posicao')
 ## 6. Diretrizes de expansão (novos componentes)
 
 1. **Superfície**: todo componente novo começa como cartão **branco, sem borda, raio 18px, `--shadow-card`** sobre o canvas. Elementos internos usam raio 14–16px (blocos) ou 10–12px (controles).
-2. **Cor**: somente tokens. Ação = `--primary`; seleção = `--ink` (marinho); positivo = `--status-success` (azul). Máximo de **1 superfície azul sólida e 1 marinho** por tela. **Nada de degradês, verde ou preto.**
+2. **Cor**: somente tokens. Ação = `--primary`; seleção = `--ink` (marinho); positivo = `--status-success` (azul). Superfícies grandes coloridas são raras: em telas internas, no máximo **1 cartão azul e 1 marinho**; o Painel é a exceção (banner, KPI de Vendas e cartão marinho de estoque). Detalhes pequenos em azul sólido (selo do calendário, contador, saldo final, dia selecionado) são permitidos. **Nada de degradês, verde ou preto.**
 3. **Forma**: tudo que é clicável e cabe numa linha (botão, aba, chip, tag, filtro, paginação, item de lista de navegação) é **pílula 999px**. Campos de texto têm raio 10px.
 4. **Tipografia**: títulos e números de destaque em **DM Sans, −0.03em**; o resto em Inter. Hierarquia por tamanho e peso, não por cor.
 5. **Símbolo da Avante**: use-o só em superfícies de marca (fundos azuis ou marinhos, áreas vazias grandes), **cortado pela borda**, a 16–38% de opacidade, com no máximo 2 por superfície. Nunca sobre tabelas, formulários ou texto denso.

@@ -1,12 +1,13 @@
 # 09 · Arquivos anexos — o que é cada um e como usar
 
-> Envie estes arquivos junto do pacote, mantendo a estrutura de pastas. **Prioridade de fonte em caso de conflito:** `design-handoff/` > `prototipo/css/tokens.css` > `prototipo/` (visual e conteúdo) > `DESIGN.md` (seções 0 e 0.1) > `MAPA_DE_TELAS.md` > `referencias/` (só conteúdo e regras de negócio; o **visual** dos prints é o antigo e **não** deve ser copiado).
+> Envie estes arquivos junto do pacote, mantendo a estrutura de pastas. **Prioridade de fonte em caso de conflito:** `design-handoff/` = `DESIGN_SYSTEM.md` > `prototipo/css/tokens.css` (com o bloco v3) > `prototipo/` (visual e conteúdo) > `MAPA_DE_TELAS.md` > `referencias/` (só conteúdo e regras de negócio; o **visual** dos prints é o antigo e **não** deve ser copiado).
 
 ## 1. Raiz do projeto
 
 | Arquivo | Conteúdo | Como usar |
 |---|---|---|
-| `DESIGN.md` | Design system em formato curto. **As seções 0 (identidade) e 0.1 (estilo visual) são as vigentes**; a seção 2 traz tokens antigos, marcados como "versão anterior" | Consulta rápida. Em caso de conflito, vale `design-handoff/03-tokens.md` |
+| **`DESIGN_SYSTEM.md`** | **Design system v3 em um arquivo só**: vibe, paleta, tipografia, espaçamento, raios, anatomia dos componentes, diretrizes de expansão e snippets. Mesmos valores deste pacote | Consulta rápida ou para enviar sozinho a outra IA |
+| `DESIGN.md` | Design system antigo (v1). **Desatualizado**: não use para cores nem estilo | Só histórico |
 | `MAPA_DE_TELAS.md` | (1) menu antigo × menu aprovado; (2) decisões sobre os pontos marcados pelo cliente; (3) catálogo dos 113 prints por módulo com o status `[x]`; (4) lista dos 113 prints → URL do estado no protótipo | Use a seção 4 para abrir cada estado no protótipo e comparar |
 | `.claude/skills/erp-design/SKILL.md` | Regras de UI de ERP (densidade, tokens, tabelas, filtros, formulários, auditoria) | Regras gerais; o estilo visual atualizado está em 04-estilos-visuais.md |
 | `skills-lock.json`, demais pastas em `.claude/skills/` | Skills de design de terceiros instaladas no projeto | Opcional, não é necessário para implementar |
@@ -17,19 +18,21 @@ Rodar: `node prototipo/serve.js` → http://localhost:5173/prototipo/
 
 | Arquivo | Conteúdo |
 |---|---|
-| `index.html` | Carrega fontes (Inter, JetBrains Mono), CSS na ordem tokens → app → components → screens → theme e os scripts das telas |
+| `index.html` | Carrega fontes (DM Sans, Inter, JetBrains Mono), CSS na ordem tokens → app → components → screens → theme → v2 → v3 e os scripts das telas |
 | `serve.js` | Servidor estático mínimo em Node, porta 5173, servindo a pasta raiz (para que os prints em `referencias/` também sejam acessíveis) |
-| **`css/tokens.css`** | **Fonte única de valores**: todas as cores (claro e escuro), gradientes, raios, sombras e fontes. Copie para o projeto final |
+| **`css/tokens.css`** | **Fonte única de valores**: todas as cores (claro e escuro), fundo, raios, sombras e fontes. O **bloco v3 no final** sobrescreve o azul e transforma os `--gradient-*` em cores sólidas. Copie inteiro para o projeto final |
 | `css/app.css` | Base: reset, tipografia, botões, badges, topbar, menu lateral, shell, página, cartões, atalhos, KPIs, pendências, visão conectada, globo, skeleton, paleta e responsivo |
 | `css/components.css` | Componentes do `ui.js`: campos, formulários, barra de filtros, tabela, abas, modal e painel lateral, lista de definição, variantes de KPI, grids utilitários, chips, info |
 | `css/screens.css` | Estilos específicos de telas: login, transições, boas-vindas, aviso de não salvo, faixa de resumo de vendas, orçamento, catálogo (modal de item, etiqueta), financeiro (gráficos, barras, agenda, plano de contas), relatórios, equipe e PDV |
-| **`css/theme.css`** | **Camada do estilo atual** (carregada por último): canvas, topbar sem borda, menu flutuante, pílulas, cartões sem borda, gradientes, ativo em preto, gráficos em azul, logo. Mostra exatamente o que mudou em relação à base |
+| `css/theme.css` | Camada v1: topbar sem borda, menu flutuante, pílulas, cartões sem borda, gráficos em azul, logo |
+| `css/v2.css` | Camada v2: menu azul em dois blocos (`.sidebar-panel` + `.sidebar-foot`), painel secundário (`.flyout`), botão "Abrir PDV" (`.pdv-launch`), fundo de manchas, blocos do Painel (`.home-split`, `.big-card`, `.focus-*`, `.act-*`, `.money-*`) e calendário (`.cal-*`) |
+| **`css/v3.css`** | **Camada atual (carregada por último)**: DM Sans nos títulos, banner azul sólido, símbolo decorativo (posições de `.deco-*`), botões sem degradê e o realce leve do branco na logo da topbar |
 | `js/icons.js` | Ícones no estilo Lucide (paths SVG) + utilitários `icon()`, `brl()` (moeda BRL), `int()` e `esc()` |
 | `js/data.js` | Dados reais extraídos dos prints que alimentam o Painel (nenhum dado inventado) |
-| `js/menu.js` | **Menu aprovado** (`MENU`), as 8 ações de criação com atalhos `Alt+n` (`CREATE_ACTIONS`) e `flatRoutes()` |
+| `js/menu.js` | **Menu aprovado** (`MENU`; itens com `more: true` vão para o painel "Mais do financeiro"), as 8 ações de criação com atalhos `Alt+n` (`CREATE_ACTIONS`) e `flatRoutes()` |
 | **`js/ui.js`** | **Biblioteca de componentes**: `pageHeader`, `btn`, `badge`, `field`, `formSection`, `filterBar`, `filter`, `dataTable`, `pager`, `tabs`, `card`, `kpi`, `kpis`, `modal`, `confirm`, `statusTabs`, `dl`, `section`, `page`, `href` (estado na URL). Também o registro `screen()` / `print()` |
-| `js/app.js` | Shell: topbar, menu lateral, roteador por hash com query (`Router`), menus suspensos, paleta `Ctrl K`, atalhos globais, tema escuro e a **logo em SVG** (`LogoMark`, `LogoSvg`) |
-| `js/painel.js` | Painel completo (boas-vindas, atalhos, KPIs, pendências, visão conectada, gráfico, localização) |
+| `js/app.js` | Shell: topbar, menu lateral azul, painel secundário (`setFlyout`, `?menu=`), botão "Abrir PDV", roteador por hash com query (`Router`), menus suspensos, paleta `Ctrl K`, atalhos globais, tema escuro, a **logo em SVG** (`LogoMark`, `LogoSvg`) e o **símbolo decorativo** (`AvanteDeco`) |
+| `js/painel.js` | Painel completo (banner azul, atalhos, KPIs, calendário financeiro, atenção + últimas ações, entradas e saídas, localização) |
 | `js/globe.js` | Globo pontilhado em canvas (seção "Onde você vende") |
 | `js/screens/acesso.js` | Login, transições ERP ↔ PDV, modal de boas-vindas, aviso de alterações não salvas |
 | `js/screens/vendas.js` | Vendas (`SalesPage`, compartilhada com o PDV) e Orçamentos (lista, detalhe, novo, editar) |
@@ -62,10 +65,10 @@ Rodar: `node prototipo/serve.js` → http://localhost:5173/prototipo/
 |---|---|
 | `README.md` | Índice, ficha do projeto, ordem de leitura, prompt sugerido |
 | `01-visao-geral.md` | Nome, tipo de design, ideia, personalidade, público, princípios, decisões |
-| `02-identidade-marca.md` | Logo (construção, SVG, tamanhos, regras), paleta, proibições, distribuição de cor |
-| `03-tokens.md` | Todos os tokens com HSL e HEX, gradientes, forma, sombras, tipografia, espaçamento, alturas, breakpoints, z-index e movimento |
-| `04-estilos-visuais.md` | O estilo "soft dashboard" detalhado, elemento por elemento |
-| `05-componentes.md` | Especificação dos 23 componentes base + componentes de tela |
+| `02-identidade-marca.md` | Logo (construção, SVG, variações, realce do branco), símbolo decorativo, paleta, proibições, distribuição de cor |
+| `03-tokens.md` | Todos os tokens com HSL e HEX, superfícies de marca, fundo, forma, sombras, tipografia, espaçamento, alturas, breakpoints, z-index e movimento |
+| `04-estilos-visuais.md` | O estilo "soft corporate dashboard chapado" detalhado, elemento por elemento, com as posições do símbolo |
+| `05-componentes.md` | Especificação dos 29 componentes base + componentes de tela |
 | `06-layout-navegacao.md` | Shell, menu completo com rotas, atalhos, estado na URL, layout do PDV e responsivo |
 | `07-telas.md` | Todas as telas com conteúdo exato |
 | `08-regras-implementacao.md` | Regras, config do Tailwind, ajustes no shadcn, ordem de construção, checklist, critérios de aceite e erros comuns |
