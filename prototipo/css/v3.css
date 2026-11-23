@@ -71,3 +71,7 @@
 
 /* Logo sobre o azul do login: peça de apoio em branco */
 .auth-art .logo-mark { color: hsl(var(--primary-foreground)); }
+
+/* Teste: símbolo do menu maior, encostado no canto inferior direito (cortado pela borda) */
+.deco-sidebar { left: auto; right: -70px; bottom: -40px; transform: none; height: 300px; color: hsl(var(--sidebar-foreground) / .18); }
+.shell.is-collapsed .deco-sidebar { right: -30px; bottom: -12px; height: 90px; }
