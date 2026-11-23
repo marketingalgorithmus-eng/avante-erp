@@ -79,3 +79,8 @@
 /* Logo do topo: peça de apoio e "ERP" em branco */
 .topbar .logo-mark .logo-ink { fill: hsl(var(--primary-foreground)); }
 .topbar .logo-erp { color: hsl(var(--primary-foreground)); opacity: 1; }
+
+/* Realce leve do branco da logo: contorno fino azul e sombra suave */
+.topbar .logo-mark .logo-ink { stroke: hsl(var(--primary) / .35); stroke-width: .6px; paint-order: stroke; }
+.topbar .logo-mark { filter: drop-shadow(0 1px 2px hsl(var(--primary) / .28)); }
+.topbar .logo-erp { text-shadow: 0 0 1px hsl(var(--primary) / .9), 0 0 1px hsl(var(--primary) / .9), 0 1px 3px hsl(var(--primary) / .4); }
