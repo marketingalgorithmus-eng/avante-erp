@@ -1,0 +1,73 @@
+/* Avante ERP — v3: estilo chapado (sem degradês), tipografia DM Sans nos títulos e o símbolo
+   da Avante como detalhe gráfico (preenchido e em linhas). Carregado por último. Só tokens. */
+
+/* ---------- Tipografia de destaque (como na arte institucional) ---------- */
+.page-title, .big-title, .hero-title, .kpi-value, .card-title, .block-title, .modal-title,
+.auth-title, .flyout-title, .cal-month, .money-stat strong, .pdv-launch-title, .doc-name, .summary-item strong, .pay-total strong, .pdv-total strong {
+  font-family: var(--font-display); letter-spacing: -0.03em;
+}
+.page-title { font-size: 28px; font-weight: 800; }
+.big-title { font-size: 21px; font-weight: 700; }
+.kpi-value { font-weight: 700; }
+
+/* ---------- Símbolo decorativo ---------- */
+.deco-a { position: absolute; pointer-events: none; display: block; width: auto; }
+
+/* ---------- Boas-vindas: banner azul sólido com o símbolo (como o print) ---------- */
+.hero.hero-blue { position: relative; overflow: hidden; padding: 28px 32px; gap: 20px; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); box-shadow: var(--shadow-brand); }
+.hero-blue > :not(.deco-a) { position: relative; z-index: 1; }
+.hero-blue .deco-hero { right: 4%; top: -28%; height: 165%; color: hsl(var(--primary-tint) / .5); }
+.hero-blue .deco-hero-line { right: 22%; bottom: -55%; height: 120%; color: hsl(var(--primary-foreground) / .22); }
+.hero-blue .hero-avatar { background: hsl(var(--primary-foreground)); color: hsl(var(--primary)); width: 48px; height: 48px; font-size: 17px; }
+.hero-blue .hero-greet { color: hsl(var(--primary-foreground) / .82); }
+.hero-blue .hero-title { font-size: 27px; font-weight: 700; line-height: 1.2; color: hsl(var(--primary-foreground)); }
+.hero-blue .hero-title b { color: hsl(var(--primary-tint)); }
+.hero-blue .seg { background: hsl(var(--primary-foreground) / .16); }
+.hero-blue .seg button { color: hsl(var(--primary-foreground) / .85); }
+.hero-blue .seg button:hover { color: hsl(var(--primary-foreground)); }
+.hero-blue .seg button[aria-pressed="true"] { background: hsl(var(--primary-foreground)); color: hsl(var(--primary)); }
+.hero-blue .btn-outline { background: hsl(var(--primary-foreground)); border-color: transparent; color: hsl(var(--primary)); border-radius: 10px; }
+.hero-blue .btn-outline:hover { background: hsl(var(--primary-tint)); }
+
+/* ---------- Indicador de Vendas com o símbolo em linhas ---------- */
+.kpi-accent { position: relative; overflow: hidden; }
+.kpi-accent > :not(.deco-a) { position: relative; z-index: 1; }
+.kpi-accent .deco-kpi { right: -14px; bottom: -26px; height: 120px; color: hsl(var(--primary-foreground) / .25); }
+
+/* ---------- Menu lateral: símbolo em linhas no espaço livre de baixo ---------- */
+.sidebar-panel { position: relative; }
+.sidebar-panel > .company, .sidebar-panel > .nav { position: relative; z-index: 1; }
+.deco-sidebar { left: 50%; bottom: 22px; transform: translateX(-50%); height: 150px; color: hsl(var(--sidebar-foreground) / .16); }
+.shell.is-collapsed .deco-sidebar { height: 44px; bottom: 14px; }
+
+/* ---------- Login: símbolo grande, como a arte ---------- */
+.auth-art { position: relative; overflow: hidden; }
+.auth-art-inner { position: relative; z-index: 1; }
+.auth-art .deco-auth { right: -12%; bottom: -8%; height: 62%; color: hsl(var(--primary-tint) / .45); }
+.auth-art .deco-auth-line { left: -10%; top: -6%; height: 34%; color: hsl(var(--primary-foreground) / .2); }
+.auth-claim { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: -0.03em; }
+
+/* ---------- Tela de carregamento: símbolo em linhas ao fundo ---------- */
+.splash { position: relative; overflow: hidden; }
+.splash > :not(.deco-a) { position: relative; z-index: 1; }
+.deco-splash { right: -6%; bottom: -18%; height: 95vh; color: hsl(var(--primary) / .10); }
+
+/* ---------- Botões sem degradê ---------- */
+.pdv-launch:hover { background: hsl(var(--primary-hover)); filter: none; }
+.money-stat.is-total, .big-count, .cal-badge, .cal-cell.is-selected, .flyout a.is-active, .sc.is-pdv { box-shadow: var(--shadow-brand); }
+
+@media (max-width: 760px) {
+  .hero.hero-blue { padding: 22px 20px; }
+  .hero-blue .hero-title { font-size: 22px; }
+  .hero-blue .deco-hero { height: 110%; right: -20%; top: -10%; }
+  .hero-blue .deco-hero-line { display: none; }
+}
+
+/* Ajuste: símbolo do banner encostado à direita e controles legíveis por cima dele */
+.hero-blue .deco-hero { right: -5%; top: -45%; height: 190%; color: hsl(var(--primary-tint) / .38); }
+.hero-blue .deco-hero-line { right: 9%; bottom: -80%; height: 150%; color: hsl(var(--primary-foreground) / .16); }
+.hero-blue .hero-title { font-size: 24px; }
+.hero-blue .seg { background: hsl(var(--primary-active)); }
+
+/* Logo sobre o azul do login: peça de apoio em branco */
+.auth-art .logo-mark { color: hsl(var(--primary-foreground)); }

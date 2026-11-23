@@ -24,6 +24,18 @@ window.Router = (function () {
   /* Logo Avante: barra azul + paralelogramo em tinta (branco no escuro), "vante" azul e "ERP" */
   var MARK = '<path class="logo-blue" d="M15.6 2h7.6c1.2 0 2.2.6 2.8 1.7L39.4 29.1c.2.5-.1.9-.6.9h-10.4c-1.4 0-2.6-.8-3.2-2L14.9 3.1c-.2-.5.1-1.1.7-1.1Z"/>' +
     '<path class="logo-ink" d="M10.6 13.7h8.6L11.9 28.2c-.6 1.1-1.7 1.8-3 1.8H.9c-.5 0-.8-.5-.5-.9l8.3-14.1c.4-.8 1.1-1.3 1.9-1.3Z"/>';
+  /* Símbolo decorativo (arte institucional): "fill" = formas chapadas translúcidas, "line" = só contorno.
+     Uso: AvanteDeco('fill', 'classe-de-posicao'). Sempre decorativo (aria-hidden). */
+  var MARK_D = ['M15.6 2h7.6c1.2 0 2.2.6 2.8 1.7L39.4 29.1c.2.5-.1.9-.6.9h-10.4c-1.4 0-2.6-.8-3.2-2L14.9 3.1c-.2-.5.1-1.1.7-1.1Z',
+    'M10.6 13.7h8.6L11.9 28.2c-.6 1.1-1.7 1.8-3 1.8H.9c-.5 0-.8-.5-.5-.9l8.3-14.1c.4-.8 1.1-1.3 1.9-1.3Z'];
+  window.AvanteDeco = function (variant, cls) {
+    var line = variant === 'line';
+    return '<svg class="deco-a ' + (line ? 'is-line ' : 'is-fill ') + (cls || '') + '" viewBox="-1 -1 42 34" aria-hidden="true" focusable="false">' +
+      MARK_D.map(function (d) {
+        return '<path d="' + d + '"' + (line ? ' fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"' : ' fill="currentColor"') + '/>';
+      }).join('') + '</svg>';
+  };
+
   window.LogoMark = function () { return '<svg class="logo-mark" viewBox="0 0 40 32" aria-hidden="true">' + MARK + '</svg>'; };
   window.LogoSvg = function (sub) {
     return '<span class="logo" role="img" aria-label="Avante ' + (sub || 'ERP') + '">' + window.LogoMark() +
@@ -101,6 +113,7 @@ window.Router = (function () {
           '<span class="company-meta"><span class="company-label">Empresa ativa</span><span class="company-name">' + esc(D.empresa.nome) + '</span></span>' +
           icon('chevDown', 14, 'chev') + '</button>' +
         '<nav class="nav">' + nav + '</nav>' +
+        AvanteDeco('line', 'deco-sidebar') +
       '</div>' +
       '<div class="flyout" id="flyout" aria-label="Mais opções do menu">' + flyouts + '</div>' +
       '<div class="sidebar-foot"><a class="pdv-launch" href="#/transicao/pdv" title="Abrir PDV (Alt+1)">' +

@@ -8,7 +8,7 @@
     layout: 'bare', title: 'Entrar',
     render: function () {
       return '<div class="auth">' +
-        '<aside class="auth-art" aria-hidden="true">' +
+        '<aside class="auth-art" aria-hidden="true">' + AvanteDeco('fill', 'deco-auth') + AvanteDeco('line', 'deco-auth-line') +
           '<div class="auth-art-inner">' + AvanteLogo() +
             '<p class="auth-claim">ERP e PDV na nuvem para vender, controlar o estoque e acompanhar o financeiro no mesmo lugar.</p>' +
             '<ul class="auth-points">' +
@@ -37,6 +37,7 @@
   function transition(kind) {
     var pdv = kind === 'pdv';
     return '<div class="splash' + (pdv ? ' theme-pdv' : '') + '" role="status" aria-live="polite">' +
+      AvanteDeco('line', 'deco-splash') +
       '<span class="splash-mark">' + LogoMark() + '</span>' +
       '<p class="splash-title">Avante ' + (pdv ? 'PDV' : 'ERP') + '</p>' +
       '<p class="splash-sub">' + (pdv ? 'Abrindo o ponto de venda' : 'Carregando seu espaço') + '</p>' +

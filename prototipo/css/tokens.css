@@ -171,3 +171,38 @@
   --shadow-brand: 0 10px 24px hsl(214 95% 40% / 0.35);
   --shadow-modal: 0 24px 64px hsl(0 0% 0% / 0.55);
 }
+
+/* =====================================================================
+   v3 — estilo "chapado" (sem degradês), inspirado na arte institucional:
+   azul sólido da marca, azul-claro translúcido para o símbolo, tipografia DM Sans.
+   Os tokens --gradient-* continuam existindo, mas agora valem cores sólidas.
+   ===================================================================== */
+:root:not(.dark) {
+  --primary: 217 92% 47%;            /* azul institucional #0A5EE8 */
+  --primary-hover: 217 92% 41%;
+  --primary-active: 217 92% 35%;
+  --ring: 217 92% 47%;
+  --primary-tint: 216 100% 86%;      /* azul-claro do símbolo na arte */
+  --gradient-brand: hsl(217 92% 47%);
+  --gradient-ink: hsl(223 72% 22%);
+  --gradient-soft: hsl(0 0% 100%);
+  --gradient-sky: hsl(204 95% 96%);
+  --gradient-indigo: hsl(236 90% 97%);
+  --gradient-sidebar: hsl(217 92% 47%);
+  --gradient-flyout: hsl(214 100% 97%);
+  --gradient-pill: hsl(223 72% 22%);
+  --shadow-brand: 0 8px 20px hsl(217 92% 40% / 0.22);
+  --font-display: "DM Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+.dark {
+  --primary-tint: 216 80% 70%;
+  --gradient-brand: hsl(214 95% 52%);
+  --gradient-ink: hsl(223 55% 20%);
+  --gradient-soft: hsl(222 18% 10%);
+  --gradient-sky: hsl(210 40% 13%);
+  --gradient-indigo: hsl(232 30% 14%);
+  --gradient-sidebar: hsl(218 70% 24%);
+  --gradient-flyout: hsl(220 35% 14%);
+  --gradient-pill: hsl(214 95% 52%);
+  --font-display: "DM Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+}

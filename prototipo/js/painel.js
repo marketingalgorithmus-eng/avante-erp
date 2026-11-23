@@ -31,7 +31,8 @@ window.Painel = (function () {
     var resumo = pend.length
       ? 'Você tem <b>' + pend.length + (pend.length === 1 ? ' pendência' : ' pendências') + '</b> hoje: ' + pend.join(' e ') + '.'
       : 'Nenhuma pendência hoje. Bom trabalho!';
-    return '<h1 class="sr-only">Painel</h1><section class="card hero" aria-label="Resumo do dia">' +
+    return '<h1 class="sr-only">Painel</h1><section class="card hero hero-blue" aria-label="Resumo do dia">' +
+      AvanteDeco('fill', 'deco-hero') + AvanteDeco('line', 'deco-hero-line') +
       '<span class="hero-avatar">' + D.usuario.inicial + '</span>' +
       '<div class="hero-text">' +
         '<p class="hero-greet">Olá, ' + esc(D.usuario.nome) + ' · ' + esc(D.empresa.nome) + ' · <span class="num">' + p.inicio + ' — ' + p.fim + ' · atualizado às ' + p.atualizadoAs + '</span></p>' +
@@ -73,7 +74,7 @@ window.Painel = (function () {
       '<div class="block-head"><h2 class="block-title" id="b2">Indicadores principais</h2><span class="block-sub">Últimos ' + D.periodo.dias + ' dias</span></div>' +
       '<div class="kpis">' +
 
-        '<a class="card kpi kpi-accent" href="#/vendas">' +
+        '<a class="card kpi kpi-accent" href="#/vendas">' + AvanteDeco('line', 'deco-kpi') +
           '<div class="kpi-top"><span>Vendas</span>' + icon('cart', 16) + '</div>' +
           '<p class="kpi-value num' + zero(v.receitaLiquida) + '">' + brl(v.receitaLiquida) + '</p>' +
           '<div class="kpi-meta num"><span><b>' + int(v.quantidade) + '</b> vendas</span><span>Ticket médio <b>' + brl(v.ticketMedio) + '</b></span></div>' +
